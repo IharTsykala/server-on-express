@@ -1,4 +1,6 @@
-let fs = require('fs');
+const fs = require('fs');
+// const path = require('path')
+// console.log(path.join(__dirname, 'service'))
 let obj = JSON.parse(fs.readFileSync('./dataBase.JSON'));
 
 const jsonStringify = (obj) => fs.writeFileSync('./dataBase.JSON', JSON.stringify(obj, null, 2))
