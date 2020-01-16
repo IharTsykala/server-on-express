@@ -1,8 +1,16 @@
 const express = require('express');
 const router = require('./router');
+const mongoose = require('mongoose');
+
+mongoose.connect('MONGO_DB=mongodb://127.0.0.1:27017/users2', {
+    useNewUrlParser: true,
+    useCreateIndex: true,
+    useFindAndModify: false,
+    useUnifiedTopology: true
+})
 
 const app = express()
-const port = 3000
+const port = process.env.PORT || 8080
 app.use(express.json())
 app.use('/users', router)
 
