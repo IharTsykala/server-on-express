@@ -14,24 +14,38 @@ const addUser = async function (body) {
     // jsonStringify(obj)
     // return 'add user'
     const user = new User(body)
-    console.log(user)
+    try {
     await user.save()
+    } catch(e) {
+        console.log(e)
+    }
     // const token = await user.generateAuthToken()
     return {user}  
 }
 
-const getUser = async function(params){
-    console.log(params)
-    return await User.findById(params.id)
+const getUser = async function(params){     
+    try {        
+      return  await User.findById(params.id)
+    } catch(e) {
+        console.log(e)
+    }    
 }
 
-const getAllUsers = async function(){    
-    return await User.find({})     
+const getAllUsers = async function(){
+    try {
+        return await User.find({})  
+    } catch(e)   {
+        console.log(e)
+    }
 }
 
 const updateUser = async function(id, body) { 
     console.log(id, body)
-    return await User.findByIdAndUpdate(id, body)
+    try{
+        return await User.findByIdAndUpdate(id, body)
+    } catch(e) {
+        console.log(e)
+    }   
     // console.log( User.findByIdAndUpdate(params.id, params.body))  
     // const index = obj.findIndex(item=>item.id === body.id)
     // if(index !== -1) {        
@@ -45,7 +59,12 @@ const updateUser = async function(id, body) {
 
 const delUser = async function(id){ 
     console.log(id)
-    return await User.deleteOne({_id:id})     
+    try {
+        return await User.deleteOne({_id:id}) 
+    } catch(e) {
+        console.log(e)
+    }
+       
     // const index = obj.findIndex(item=>item.id === id)       
     // if(index !== -1) {        
     //     obj.splice(index, 1)        
