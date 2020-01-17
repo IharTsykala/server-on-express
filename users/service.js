@@ -1,8 +1,8 @@
 // const fs = require("fs")
 // let obj = JSON.parse(fs.readFileSync('./dataBase.JSON'));
 // const jsonStringify = (obj) => fs.writeFileSync('./dataBase.JSON', JSON.stringify(obj, null, 2))
-const mongoose = require('mongoose')
-const Animal = require('../animals/model.js')
+const mongoose = require("mongoose")
+const Animal = require("../animals/model.js")
 const User = require("./model.js")
 
 const addUser = async function(body) {
@@ -68,33 +68,31 @@ const delUser = async function(id) {
   // }
 }
 
-const getUserPets = async function(id) { 
+const getUserPets = async function(id) {
   console.log(id)
-  try {    
-    return await Animal.find({owner:id}).populate('owner')
+  try {
+    return await Animal.find({ owner: id }).populate("owner")
   } catch (e) {
     console.log(e)
   }
 }
 
-const getUserWithPets = async function(id) { 
- console.log(id)
+const getUserWithPets = async function(id) {
+  console.log(id)
   try {
-  return await User.aggregate([
-    {
-      $lookup:
-        {
-          from: 'animals',
-       localField: '_id',
-       foreignField: 'owner',
-       as: 'pets'
+    return await User.aggregate([
+      {
+        $lookup: {
+          from: "animals",
+          localField: "_id",
+          foreignField: "owner",
+          as: "pets"
         }
-   },
-   {
-   $match: {'_id':mongoose.Types.ObjectId(id)}
-   }
-  ])
-    
+      },
+      {
+        $match: { _id: mongoose.Types.ObjectId(id) }
+      }
+    ])
   } catch (e) {
     console.log(e)
   }
