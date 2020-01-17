@@ -42,6 +42,26 @@ class UserController {
       res.status(400).send({ error: e.message })
     }
   }
+  getUserPet = async (req, res) => {
+    try {
+      
+      // console.log('ggg')
+      const result = await service.getPets()
+          
+      res.send(result)
+    } catch (e) {
+      res.status(400).send({ error: e.message })
+    }
+  }
+  getUserIDPets = async (req, res) => {
+    try {
+      console.log('ggg')
+      const result = await service.getUserWithPets(req.params.id)
+      res.send(result)
+    } catch (e) {
+      res.status(400).send({ error: e.message })
+    }
+  }
 }
 
 module.exports = UserController
