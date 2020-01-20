@@ -22,6 +22,7 @@ class UserController {
 
   addUser = async (req, res) => {
     try {
+      console.log(req.body)
       const result = await service.addUser(req.body)
       res.status(201).send(result)
     } catch (e) {
@@ -64,6 +65,15 @@ class UserController {
       res.status(400).send({ error: e.message })
     }
   }
+
+  loginUser = async (req, res) => {      
+    try {
+        const result = await service.loginUser(req.body.login, req.body.password)
+        res.status(201).send(result)
+    } catch (e) {
+        res.status(400).send({error:e.message})
+    }
+}
 }
 
 module.exports = UserController

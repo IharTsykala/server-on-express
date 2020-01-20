@@ -12,5 +12,6 @@ routerUsers.get('/withPets/:id',  user_controller.getUserWithPetsById)
 routerUsers.post('/add', user_controller.addUser)
 routerUsers.put('/update/:id', user_controller.updateUserById)
 routerUsers.delete('/delete/:id', user_controller.deleteUserById)
+routerUsers.post('/login', user_controller.loginUser)
 
 module.exports = routerUsers

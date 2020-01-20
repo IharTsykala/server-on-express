@@ -25,13 +25,11 @@ const addUser = async function(body) {
   // obj.push(body)
   // jsonStringify(obj)
   // return 'add user'
+  console.log(body)
   const user = new User(body)
-  try {
-    await user.save()
-  } catch (e) {
-    console.log(e)
-  }
-  return { user }
+  await user.save()
+  const token = await user.generateAuthToken()
+  return {user, token}
 }
 
 const updateUserById = async function(id, body) {  
@@ -94,6 +92,12 @@ const getUserWithPetsById = async function(id) {
   }
 }
 
+const loginUser = async function(login, password){
+  const user = await User.findByCredentials(login, password) 
+  const token = await user.generateAuthToken()    
+  return {user, token}
+}
+
 module.exports = {
   getAllUsers,
   getUserById,
@@ -101,5 +105,6 @@ module.exports = {
   updateUserById,
   deleteUserById,  
   getUserPetsById,
-  getUserWithPetsById
+  getUserWithPetsById,
+  loginUser
 }
