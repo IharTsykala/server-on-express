@@ -1,7 +1,7 @@
 const Pet = require("./model-pets")
 
 const getAllPets = async function() {
-  try {    
+  try {
     return await Pet.find({})
   } catch (e) {
     console.log(e)
@@ -17,8 +17,7 @@ const getPetsById = async function(id) {
 }
 
 const addPets = async function(body) {
-
-  console.log(body)  
+  console.log(body)
   const pet = new Pet(body)
   try {
     await pet.save()
@@ -28,26 +27,26 @@ const addPets = async function(body) {
   return { pet }
 }
 
-const updatePetsById = async function(id, body) {  
+const updatePetsById = async function(id, body) {
   try {
     return await Pet.findByIdAndUpdate(id, body)
   } catch (e) {
     console.log(e)
-  }  
+  }
 }
 
-const deletePetsById = async function(id) {  
+const deletePetsById = async function(id) {
   try {
     return await Pet.deleteOne({ _id: id })
   } catch (e) {
     console.log(e)
-  }  
+  }
 }
 
 module.exports = {
   getAllPets,
   getPetsById,
-  addPets,    
+  addPets,
   updatePetsById,
   deletePetsById
 }

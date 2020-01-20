@@ -12,13 +12,13 @@ class UserController {
   }
 
   getUserById = async (req, res) => {
-    try {      
+    try {
       const result = await service.getUserById(req.params.id)
       res.send(result)
     } catch (e) {
       res.status(400).send({ error: e.message })
     }
-  } 
+  }
 
   addUser = async (req, res) => {
     try {
@@ -37,7 +37,7 @@ class UserController {
     } catch (e) {
       res.status(400).send({ error: e.message })
     }
-  } 
+  }
 
   deleteUserById = async (req, res) => {
     try {
@@ -46,10 +46,10 @@ class UserController {
     } catch (e) {
       res.status(400).send({ error: e.message })
     }
-  }  
-     
+  }
+
   getUserPetsById = async (req, res) => {
-    try {      
+    try {
       const result = await service.getUserPetsById(req.params.id)
       res.send(result)
     } catch (e) {
@@ -57,7 +57,7 @@ class UserController {
     }
   }
 
-  getUserWithPetsById = async (req, res) => {    
+  getUserWithPetsById = async (req, res) => {
     try {
       const result = await service.getUserWithPetsById(req.params.id)
       res.send(result)
@@ -66,14 +66,14 @@ class UserController {
     }
   }
 
-  loginUser = async (req, res) => {      
+  loginUser = async (req, res) => {
     try {
-        const result = await service.loginUser(req.body.login, req.body.password)
-        res.status(201).send(result)
+      const result = await service.loginUser(req.body.login, req.body.password)
+      res.status(201).send(result)
     } catch (e) {
-        res.status(400).send({error:e.message})
+      res.status(400).send({ error: e.message })
     }
-}
+  }
 }
 
 module.exports = UserController

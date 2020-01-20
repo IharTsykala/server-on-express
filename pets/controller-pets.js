@@ -13,7 +13,7 @@ class PetsController {
   }
 
   getPetsById = async (req, res) => {
-    try {      
+    try {
       const result = await servicePets.getPetsById(req.params.id)
       res.send(result)
     } catch (e) {
@@ -21,9 +21,9 @@ class PetsController {
     }
   }
 
-  addPets  = async (req, res) => {
-    try {      
-      const result = await servicePets.addPets (req.body)
+  addPets = async (req, res) => {
+    try {
+      const result = await servicePets.addPets(req.body)
       res.status(201).send(result)
     } catch (e) {
       res.status(400).send({ error: e.message })
@@ -37,16 +37,16 @@ class PetsController {
     } catch (e) {
       res.status(400).send({ error: e.message })
     }
-  } 
+  }
 
-  deletePetsById  = async (req, res) => {
+  deletePetsById = async (req, res) => {
     try {
       const result = await servicePets.deletePetsById(req.params.id)
       res.status(201).send(result)
     } catch (e) {
       res.status(400).send({ error: e.message })
     }
-  }   
+  }
 }
 
 module.exports = PetsController
