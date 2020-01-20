@@ -4,6 +4,10 @@ const userSchema = new mongoose.Schema({
     type: String,    
     required: true    
   },
+  name: {
+    type: String,    
+    required: true    
+  },
   owner: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Users',   
@@ -11,5 +15,5 @@ const userSchema = new mongoose.Schema({
   }  
 })
 
-const Animal = mongoose.model("Animals", userSchema)
-module.exports = Animal
+const Pet = mongoose.model("Pets", userSchema)
+module.exports = Pet

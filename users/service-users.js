@@ -2,8 +2,24 @@
 // let obj = JSON.parse(fs.readFileSync('./dataBase.JSON'));
 // const jsonStringify = (obj) => fs.writeFileSync('./dataBase.JSON', JSON.stringify(obj, null, 2))
 const mongoose = require("mongoose")
-const Animal = require("../animals/model.js")
-const User = require("./model.js")
+const Pet = require("../pets/model-pets")
+const User = require("./model-users")
+
+const getAllUsers = async function() {
+  try {
+    return await User.find({})
+  } catch (e) {
+    console.log(e)
+  }
+}
+
+const getUserById = async function(id) {
+  try {    
+    return await User.findById(id)
+  } catch (e) {
+    console.log(e)
+  }
+}
 
 const addUser = async function(body) {
   // obj.push(body)
@@ -18,24 +34,7 @@ const addUser = async function(body) {
   return { user }
 }
 
-const getUser = async function(id) {
-  try {
-    return await User.findById(id)
-  } catch (e) {
-    console.log(e)
-  }
-}
-
-const getAllUsers = async function() {
-  try {
-    return await User.find({})
-  } catch (e) {
-    console.log(e)
-  }
-}
-
-const updateUser = async function(id, body) {
-  console.log(id, body)
+const updateUserById = async function(id, body) {  
   try {
     return await User.findByIdAndUpdate(id, body)
   } catch (e) {
@@ -51,8 +50,7 @@ const updateUser = async function(id, body) {
   // }
 }
 
-const delUser = async function(id) {
-  console.log(id)
+const deleteUserById = async function(id) {  
   try {
     return await User.deleteOne({ _id: id })
   } catch (e) {
@@ -68,22 +66,20 @@ const delUser = async function(id) {
   // }
 }
 
-const getUserPets = async function(id) {
-  console.log(id)
+const getUserPetsById = async function(id) {  
   try {
-    return await Animal.find({ owner: id }).populate("owner")
+    return await Pet.find({ owner: id }).populate("owner")
   } catch (e) {
     console.log(e)
   }
 }
 
-const getUserWithPets = async function(id) {
-  console.log(id)
+const getUserWithPetsById = async function(id) {  
   try {
     return await User.aggregate([
       {
         $lookup: {
-          from: "animals",
+          from: "pets",
           localField: "_id",
           foreignField: "owner",
           as: "pets"
@@ -99,12 +95,11 @@ const getUserWithPets = async function(id) {
 }
 
 module.exports = {
-  addUser,
-  getUser,
   getAllUsers,
-  updateUser,
-  delUser,
-  // getPets,
-  getUserPets,
-  getUserWithPets
+  getUserById,
+  addUser,    
+  updateUserById,
+  deleteUserById,  
+  getUserPetsById,
+  getUserWithPetsById
 }
