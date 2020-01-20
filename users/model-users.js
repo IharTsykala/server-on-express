@@ -1,6 +1,7 @@
 const mongoose = require("mongoose")
 const bcrypt = require('bcryptjs') 
 const jwt = require('jsonwebtoken')
+
 const userSchema = new mongoose.Schema({
   login: {
       type: String,
@@ -13,8 +14,7 @@ const userSchema = new mongoose.Schema({
       required: true
   },
   surname: {
-      type: String,
-      // required: true
+      type: String,      
   },
   password: {
       type: String,
@@ -49,7 +49,6 @@ userSchema.statics.findByCredentials = async (login, password) => {
   if (!isMatch) {
       throw new Error('Unable to login')
   }
-
   return user
 }
 
@@ -58,14 +57,13 @@ userSchema.methods.generateAuthToken = async function () {
   const token = jwt.sign({_id: user._id.toString() }, 'expressapp');
   user.tokens = user.tokens.concat({ token })
   user.save()
-
   return token
 }
 
 userSchema.pre('save', async function(next){
   const user = this
-  if(user.isModified('password')){
-      user.password = await bcrypt.hash(user.password, 8)
+  if(user.isModified('password')){    
+      user.password = await bcrypt.hash(user.password, 8)      
   }
   next()
 })
