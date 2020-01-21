@@ -12,14 +12,14 @@ const storageConfig = multer.diskStorage({
     }
   });
   
-const upload = multer({storage:storageConfig})
+const upload = multer({storage:storageConfig}).single("test")
 
 const upload_controller = new UploadController()
 
 const routerUpload = new express.Router()
 
 
-routerUpload.post("/public/safeFileIntoImages", upload.single("test"), upload_controller.safeImg)
+routerUpload.post("/public/safeFileIntoImages", upload, upload_controller.safeImg)
 
 
 module.exports = routerUpload
