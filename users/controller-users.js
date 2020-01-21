@@ -75,27 +75,24 @@ class UserController {
     }
   }
 
-  logOutCurrentDevice =  async (req, res) => {
-    try {        
-        await service.logOutCurrentDevice(req)
-        res.send({responce: "successfully logout"})
+  logOutCurrentDevice = async (req, res) => {
+    try {
+      await service.logOutCurrentDevice(req)
+      res.send({ responce: "successfully logout" })
     } catch (e) {
-        res.status(400).send({error:e.message})
+      res.status(400).send({ error: e.message })
     }
   }
 
   logOutAllDevices = async (req, res) => {
-    try {        
+    try {
       // console.log(req.token)
-        await service.logOutAllDevices(req)
-        res.send({responce: "successfully logout"})
+      await service.logOutAllDevices(req)
+      res.send({ responce: "successfully logout" })
     } catch (e) {
-        res.status(400).send({error:e.message})
+      res.status(400).send({ error: e.message })
     }
   }
 }
-
-
-
 
 module.exports = UserController

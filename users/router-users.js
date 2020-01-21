@@ -1,6 +1,6 @@
 const express = require("express")
 const UserController = require("./controller-users.js")
-const auth = require('../middleware/auth')
+const auth = require("../middleware/auth")
 
 const user_controller = new UserController()
 
@@ -13,7 +13,11 @@ routerUsers.post("/add", user_controller.addUser)
 routerUsers.put("/update/:id", user_controller.updateUserById)
 routerUsers.delete("/delete/:id", user_controller.deleteUserById)
 routerUsers.post("/login", user_controller.loginUser)
-routerUsers.post("/logOutCurrentDevice", auth, user_controller.logOutCurrentDevice)
+routerUsers.post(
+  "/logOutCurrentDevice",
+  auth,
+  user_controller.logOutCurrentDevice
+)
 routerUsers.post("/logOutAllDevices", auth, user_controller.logOutAllDevices)
 
 module.exports = routerUsers
