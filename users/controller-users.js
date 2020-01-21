@@ -74,6 +74,27 @@ class UserController {
       res.status(400).send({ error: e.message })
     }
   }
+
+  logOutCurrentDevice =  async (req, res) => {
+    try {        
+        await service.logOutCurrentDevice(req)
+        res.send({responce: "successfully logout"})
+    } catch (e) {
+        res.status(400).send({error:e.message})
+    }
+  }
+
+  logOutAllDevices = async (req, res) => {
+    try {        
+        await service.logOutAllDevices(req)
+        res.send({responce: "successfully logout"})
+    } catch (e) {
+        res.status(400).send({error:e.message})
+    }
+  }
 }
+
+
+
 
 module.exports = UserController

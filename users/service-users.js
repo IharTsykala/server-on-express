@@ -14,7 +14,7 @@ const getAllUsers = async function() {
 }
 
 const getUserById = async function(id) {
-  try {
+  try {    
     return await User.findById(id)
   } catch (e) {
     console.log(e)
@@ -24,15 +24,14 @@ const getUserById = async function(id) {
 const addUser = async function(body) {
   // obj.push(body)
   // jsonStringify(obj)
-  // return 'add user'
-  console.log(body)
+  // return 'add user'  
   const user = new User(body)
   await user.save()
   const token = await user.generateAuthToken()
-  return { user, token }
+  return {user, token}
 }
 
-const updateUserById = async function(id, body) {
+const updateUserById = async function(id, body) {  
   try {
     return await User.findByIdAndUpdate(id, body)
   } catch (e) {
@@ -48,7 +47,7 @@ const updateUserById = async function(id, body) {
   // }
 }
 
-const deleteUserById = async function(id) {
+const deleteUserById = async function(id) {  
   try {
     return await User.deleteOne({ _id: id })
   } catch (e) {
@@ -64,7 +63,7 @@ const deleteUserById = async function(id) {
   // }
 }
 
-const getUserPetsById = async function(id) {
+const getUserPetsById = async function(id) {  
   try {
     return await Pet.find({ owner: id }).populate("owner")
   } catch (e) {
@@ -72,7 +71,7 @@ const getUserPetsById = async function(id) {
   }
 }
 
-const getUserWithPetsById = async function(id) {
+const getUserWithPetsById = async function(id) {  
   try {
     return await User.aggregate([
       {
@@ -92,19 +91,29 @@ const getUserWithPetsById = async function(id) {
   }
 }
 
-const loginUser = async function(login, password) {
-  const user = await User.findByCredentials(login, password)
-  const token = await user.generateAuthToken()
-  return { user, token }
+const loginUser = async function(login, password){
+  const user = await User.findByCredentials(login, password) 
+  const token = await user.generateAuthToken()    
+  return {user, token}
+}
+
+const logOutCurrentDevice = async function(req){
+  console.log(req.user)
+  req.user.tokens = req.user.tokens.filter((token) => {
+      return token.token !== req.token
+
+  })
+  await req.user.save()
 }
 
 module.exports = {
   getAllUsers,
   getUserById,
-  addUser,
+  addUser,    
   updateUserById,
-  deleteUserById,
+  deleteUserById,  
   getUserPetsById,
   getUserWithPetsById,
-  loginUser
+  loginUser,
+  logOutCurrentDevice
 }
