@@ -99,10 +99,22 @@ const loginUser = async function(login, password){
 
 const logOutCurrentDevice = async function(req){
   console.log(req.user)
-  req.user.tokens = req.user.tokens.filter((token) => {
-      return token.token !== req.token
+  req.user.tokens = req.user.tokens.filter((tnk) => {
+      return tnk.token !== req.token
 
   })
+  await req.user.save()
+}
+
+const logOutAllDevices = async function(req){ 
+  console.log(req) 
+  const index = await req.user.tokens.findIndex(tnk=>tnk.token === req.token) 
+  console.log(index) 
+  if(index !== -1) {
+    req.user.tokens = []      
+  } else {
+      throw new Error('the token dont exist')
+  }
   await req.user.save()
 }
 
@@ -115,5 +127,6 @@ module.exports = {
   getUserPetsById,
   getUserWithPetsById,
   loginUser,
-  logOutCurrentDevice
+  logOutCurrentDevice,
+  logOutAllDevices
 }

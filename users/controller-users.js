@@ -86,6 +86,7 @@ class UserController {
 
   logOutAllDevices = async (req, res) => {
     try {        
+      // console.log(req.token)
         await service.logOutAllDevices(req)
         res.send({responce: "successfully logout"})
     } catch (e) {

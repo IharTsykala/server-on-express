@@ -14,6 +14,6 @@ routerUsers.put("/update/:id", user_controller.updateUserById)
 routerUsers.delete("/delete/:id", user_controller.deleteUserById)
 routerUsers.post("/login", user_controller.loginUser)
 routerUsers.post("/logOutCurrentDevice", auth, user_controller.logOutCurrentDevice)
-// routerUsers.post("/logOutAllDevices", auth, user_controller.logOutAllDevices)
+routerUsers.post("/logOutAllDevices", auth, user_controller.logOutAllDevices)
 
 module.exports = routerUsers
