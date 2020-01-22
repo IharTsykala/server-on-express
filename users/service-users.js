@@ -97,21 +97,21 @@ const loginUser = async function(login, password) {
   return { user, token }
 }
 
-const logOutCurrentDevice = async function(req) {  
-  req.user.tokens = req.user.tokens.filter(tnk => {
-    return tnk.token !== req.token
+const logOutCurrentDevice = async function(user, currentToken) {  
+  user.tokens = user.tokens.filter(tkn => {
+    return tkn.token !== currentToken
   })
-  await req.user.save()
+  await user.tokens.save()
 }
 
-const logOutAllDevices = async function(req) {  
-  const index = await req.user.tokens.findIndex(tnk => tnk.token === req.token)  
-  if (index !== -1) {
-    req.user.tokens = []
+const logOutAllDevices = async function(tokens, currentToken) {  
+  const ind = await tokens.findIndex(tkn => tkn.token === currentToken)  
+  if (ind !== -1) {
+    tokens = []
   } else {
     throw new Error("the token dont exist")
   }
-  await req.user.save()
+  await tokens.save()
 }
 
 module.exports = {
