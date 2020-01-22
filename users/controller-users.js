@@ -1,4 +1,6 @@
-const service = require("./service-users")
+const ServiceUser = require("./service-users")
+
+const service = new ServiceUser()
 
 class UserController {
   constructor() {}
@@ -66,7 +68,7 @@ class UserController {
     }
   }
 
-  loginUser = async (req, res) => {    
+  loginUser = async (req, res) => {
     try {
       const result = await service.loginUser(req.body.login, req.body.password)
       res.status(201).send(result)
@@ -85,7 +87,7 @@ class UserController {
   }
 
   logOutAllDevices = async (req, res) => {
-    try {      
+    try {
       await service.logOutAllDevices(req.user.tokens, req.token)
       res.send({ responce: "successfully logout" })
     } catch (e) {

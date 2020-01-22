@@ -1,128 +1,189 @@
-// const fs = require("fs")
-// let obj = JSON.parse(fs.readFileSync('./dataBase.JSON'));
-// const jsonStringify = (obj) => fs.writeFileSync('./dataBase.JSON', JSON.stringify(obj, null, 2))
 const mongoose = require("mongoose")
 const Pet = require("../pets/model-pets")
 const User = require("./model-users")
 
-const getAllUsers = async function() {
-  try {
-    return await User.find({})
-  } catch (e) {
-    console.log(e)
+class ServiceUser {
+  constructor() {}
+
+  getAllUsers = async function() {
+    try {
+      return await User.find({})
+    } catch (e) {
+      console.log(e)
+    }
   }
-}
 
-const getUserById = async function(id) {
-  try {
-    return await User.findById(id)
-  } catch (e) {
-    console.log(e)
+  getUserById = async function(id) {
+    try {
+      return await User.findById(id)
+    } catch (e) {
+      console.log(e)
+    }
   }
-}
 
-const addUser = async function(body) {
-  // obj.push(body)
-  // jsonStringify(obj)
-  // return 'add user'
-  const user = new User(body)
-  await user.save()
-  const token = await user.generateAuthToken()
-  return { user, token }
-}
-
-const updateUserById = async function(id, body) {
-  try {
-    return await User.findByIdAndUpdate(id, body)
-  } catch (e) {
-    console.log(e)
+  addUser = async function(body) {
+    const user = new User(body)
+    await user.save()
+    const token = await user.generateAuthToken()
+    return { user, token }
   }
-  // const index = obj.findIndex(item=>item.id === body.id)
-  // if(index !== -1) {
-  //     obj[index] = Object.assign(obj[index], body)
-  //     jsonStringify(obj)
-  //     return 'user update'
-  // } else {
-  //     throw new Error('dataBase doesnt this id')
-  // }
-}
 
-const deleteUserById = async function(id) {
-  try {
-    return await User.deleteOne({ _id: id })
-  } catch (e) {
-    console.log(e)
+  updateUserById = async function(id, body) {
+    try {
+      return await User.findByIdAndUpdate(id, body)
+    } catch (e) {
+      console.log(e)
+    }
   }
-  // const index = obj.findIndex(item=>item.id === id)
-  // if(index !== -1) {
-  //     obj.splice(index, 1)
-  //     jsonStringify(obj)
-  //     return 'user delete'
-  // } else {
-  //     throw new Error('dataBase doesnt this id')
-  // }
-}
 
-const getUserPetsById = async function(id) {
-  try {
-    return await Pet.find({ owner: id }).populate("owner")
-  } catch (e) {
-    console.log(e)
+  deleteUserById = async function(id) {
+    try {
+      return await User.deleteOne({ _id: id })
+    } catch (e) {
+      console.log(e)
+    }
   }
-}
 
-const getUserWithPetsById = async function(id) {
-  try {
-    return await User.aggregate([
-      {
-        $lookup: {
-          from: "pets",
-          localField: "_id",
-          foreignField: "owner",
-          as: "pets"
+  getUserPetsById = async function(id) {
+    try {
+      return await Pet.find({ owner: id }).populate("owner")
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
+  getUserWithPetsById = async function(id) {
+    try {
+      return await User.aggregate([
+        {
+          $lookup: {
+            from: "pets",
+            localField: "_id",
+            foreignField: "owner",
+            as: "pets"
+          }
+        },
+        {
+          $match: { _id: mongoose.Types.ObjectId(id) }
         }
-      },
-      {
-        $match: { _id: mongoose.Types.ObjectId(id) }
-      }
-    ])
-  } catch (e) {
-    console.log(e)
+      ])
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
+  loginUser = async function(login, password) {
+    const user = await User.findByCredentials(login, password)
+    const token = await user.generateAuthToken()
+    return { user, token }
+  }
+
+  logOutCurrentDevice = async function(user, currentToken) {
+    user.tokens = user.tokens.filter(tkn => {
+      return tkn.token !== currentToken
+    })
+    await user.tokens.save()
+  }
+
+  logOutAllDevices = async function(tokens, currentToken) {
+    const ind = await tokens.findIndex(tkn => tkn.token === currentToken)
+    if (ind !== -1) {
+      tokens = []
+    } else {
+      throw new Error("the token dont exist")
+    }
+    await tokens.save()
   }
 }
 
-const loginUser = async function(login, password) {
-  const user = await User.findByCredentials(login, password)
-  const token = await user.generateAuthToken()
-  return { user, token }
-}
+// const getAllUsers = async function() {
+//   try {
+//     return await User.find({})
+//   } catch (e) {
+//     console.log(e)
+//   }
+// }
 
-const logOutCurrentDevice = async function(user, currentToken) {  
-  user.tokens = user.tokens.filter(tkn => {
-    return tkn.token !== currentToken
-  })
-  await user.tokens.save()
-}
+// const getUserById = async function(id) {
+//   try {
+//     return await User.findById(id)
+//   } catch (e) {
+//     console.log(e)
+//   }
+// }
 
-const logOutAllDevices = async function(tokens, currentToken) {  
-  const ind = await tokens.findIndex(tkn => tkn.token === currentToken)  
-  if (ind !== -1) {
-    tokens = []
-  } else {
-    throw new Error("the token dont exist")
-  }
-  await tokens.save()
-}
+// const addUser = async function(body) {
+//   const user = new User(body)
+//   await user.save()
+//   const token = await user.generateAuthToken()
+//   return { user, token }
+// }
 
-module.exports = {
-  getAllUsers,
-  getUserById,
-  addUser,
-  updateUserById,
-  deleteUserById,
-  getUserPetsById,
-  getUserWithPetsById,
-  loginUser,
-  logOutCurrentDevice,
-  logOutAllDevices
-}
+// const updateUserById = async function(id, body) {
+//   try {
+//     return await User.findByIdAndUpdate(id, body)
+//   } catch (e) {
+//     console.log(e)
+//   }
+// }
+
+// const deleteUserById = async function(id) {
+//   try {
+//     return await User.deleteOne({ _id: id })
+//   } catch (e) {
+//     console.log(e)
+//   }
+// }
+
+// const getUserPetsById = async function(id) {
+//   try {
+//     return await Pet.find({ owner: id }).populate("owner")
+//   } catch (e) {
+//     console.log(e)
+//   }
+// }
+
+// const getUserWithPetsById = async function(id) {
+//   try {
+//     return await User.aggregate([
+//       {
+//         $lookup: {
+//           from: "pets",
+//           localField: "_id",
+//           foreignField: "owner",
+//           as: "pets"
+//         }
+//       },
+//       {
+//         $match: { _id: mongoose.Types.ObjectId(id) }
+//       }
+//     ])
+//   } catch (e) {
+//     console.log(e)
+//   }
+// }
+
+// const loginUser = async function(login, password) {
+//   const user = await User.findByCredentials(login, password)
+//   const token = await user.generateAuthToken()
+//   return { user, token }
+// }
+
+// const logOutCurrentDevice = async function(user, currentToken) {
+//   user.tokens = user.tokens.filter(tkn => {
+//     return tkn.token !== currentToken
+//   })
+//   await user.tokens.save()
+// }
+
+// const logOutAllDevices = async function(tokens, currentToken) {
+//   const ind = await tokens.findIndex(tkn => tkn.token === currentToken)
+//   if (ind !== -1) {
+//     tokens = []
+//   } else {
+//     throw new Error("the token dont exist")
+//   }
+//   await tokens.save()
+// }
+
+module.exports = ServiceUser
