@@ -8,29 +8,16 @@ const schema = Joi.object({
  
     surname: Joi.ref('password'),
 
+    phone: Joi.string()
+    .pattern(new RegExp('^[0-9]{3,30}')),
+
     password: Joi.number()  ,      
 
-    role: Joi.string(),
-     
-    tokens: [
-        {
-          token: {
-            type: String,
-            required: true
-          }
-        }
-      ]
+    role: Joi.string()     
+    
 
     })
 
-
-// schema.validate({name: 'abc', password: 1994 });
-// // -> { value: { username: 'abc', birth_year: 1994 } }
-
-// schema.validate({});
-// // -> { value: {}, error: '"username" is required' }
-
-// Also -
 
 const validation = (schema)=> {
    
