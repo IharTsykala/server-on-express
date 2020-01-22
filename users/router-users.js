@@ -11,8 +11,8 @@ routerUsers.get("/pets/:id", user_controller.getUserPetsById)
 routerUsers.get("/withPets/:id", user_controller.getUserWithPetsById)
 routerUsers.post("/add", user_controller.addUser)
 routerUsers.put("/update/:id", user_controller.updateUserById)
-routerUsers.delete("/delete/:id", user_controller.deleteUserById)
-routerUsers.post("/login", user_controller.loginUser)
+routerUsers.delete("/delete/:id", auth, user_controller.deleteUserById)
+routerUsers.post("/login", auth, user_controller.loginUser)
 routerUsers.post(
   "/logOutCurrentDevice",
   auth,

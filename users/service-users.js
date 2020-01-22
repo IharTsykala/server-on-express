@@ -97,18 +97,15 @@ const loginUser = async function(login, password) {
   return { user, token }
 }
 
-const logOutCurrentDevice = async function(req) {
-  console.log(req.user)
+const logOutCurrentDevice = async function(req) {  
   req.user.tokens = req.user.tokens.filter(tnk => {
     return tnk.token !== req.token
   })
   await req.user.save()
 }
 
-const logOutAllDevices = async function(req) {
-  console.log(req)
-  const index = await req.user.tokens.findIndex(tnk => tnk.token === req.token)
-  console.log(index)
+const logOutAllDevices = async function(req) {  
+  const index = await req.user.tokens.findIndex(tnk => tnk.token === req.token)  
   if (index !== -1) {
     req.user.tokens = []
   } else {
