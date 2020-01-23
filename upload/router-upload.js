@@ -1,17 +1,7 @@
 const express = require("express")
-const multer = require("multer")
 const UploadController = require("./controller-upload")
+const upload = require("../middleware/multer")
 
-const storageConfig = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, "public/images")
-  },
-  filename: (req, file, cb) => {
-    cb(null, file.originalname)
-  }
-})
-
-const upload = multer({ storage: storageConfig }).single("test")
 
 const upload_controller = new UploadController()
 
