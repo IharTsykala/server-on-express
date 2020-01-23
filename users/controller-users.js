@@ -23,7 +23,8 @@ class UserController {
   }
 
   addUser = async (req, res) => {
-    try {      
+    try {   
+      // console.log(req)       
       const result = await service.addUser(req.body)
       res.status(201).send(result)
     } catch (e) {
@@ -32,7 +33,7 @@ class UserController {
   }
 
   updateUserById = async (req, res) => {
-    try {
+    try {      
       const result = await service.updateUserById(req.params.id, req.body)
       res.status(201).send(result)
     } catch (e) {

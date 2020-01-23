@@ -29,7 +29,7 @@ class ServiceUser {
   }
 
   updateUserById = async function(id, body) {
-    try {
+    try {      
       return await User.findByIdAndUpdate(id, body)
     } catch (e) {
       console.log(e)

@@ -11,7 +11,7 @@ const schema = Joi.object({
   name: Joi.string(),
 
     phone: Joi.string()
-    .pattern(new RegExp(`^((\\+375)\\s\\((29|33|25|44)\\)\\s|(375)(29|33|25|44)|(8\\s\\((0(29|33|25|44)\\)))\\s)(([0-9]{7})|([0-9]{3}-[0-9]{2}-[0-9]{2}))`)),
+    .pattern(new RegExp(`^((\\+375)\\s\\((29|33|25|44)\\)\\s|(375)(29|33|25|44)|(8\\s\\((0(29|33|25|44)\\)))\\s)(([0-9]{7})|([0-9]{3}-[0-9]{2}-[0-9]{2}))`)).error(new Error('invalid phone')),
 
     password: Joi.number().positive(),      
 
@@ -33,7 +33,7 @@ const validation = (schema)=> {
    
   return async(req, res, next)=>{
 
-    try {
+    try {             
         const value = await schema.validateAsync(req.body);
         next()
     }
