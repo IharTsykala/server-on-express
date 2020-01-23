@@ -10,7 +10,7 @@ const schema = Joi.object({
 
     password: Joi.number()  ,      
 
-    role: Joi.string()        
+    role: Joi.string() ,       
 
   role: Joi.string(),
 
@@ -24,7 +24,6 @@ const schema = Joi.object({
   ]
 })
 
-<<<<<<< HEAD
 const validation = (schema)=> {
    
   return async(req, res, next)=>{
@@ -36,15 +35,6 @@ const validation = (schema)=> {
     catch (err) {
         res.status(400).send({ error: err.message })
      }
-=======
-const validation = schema => {
-  return async (req, res, next) => {
-    try {
-      const value = await schema.validateAsync(req.body)
-      next()
-    } catch (err) {
-      console.log(err)
->>>>>>> e715dc7887a9c8b34603de9b68d4790772147146
     }
   }
 }
