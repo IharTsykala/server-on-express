@@ -79,7 +79,7 @@ class UserController {
 
   logOutCurrentDevice = async (req, res) => {
     try {
-      await service.logOutCurrentDevice(req.user.tokens, req.token)
+      await service.logOutCurrentDevice(req.user, req.token)
       res.send({ responce: "successfully logout" })
     } catch (e) {
       res.status(400).send({ error: e.message })
@@ -88,7 +88,7 @@ class UserController {
 
   logOutAllDevices = async (req, res) => {
     try {
-      await service.logOutAllDevices(req.user.tokens, req.token)
+      await service.logOutAllDevices(req.user, req.token)
       res.send({ responce: "successfully logout" })
     } catch (e) {
       res.status(400).send({ error: e.message })

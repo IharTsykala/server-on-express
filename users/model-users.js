@@ -68,21 +68,10 @@ userSchema.methods.generateAuthToken = async function() {
 userSchema.pre("save", async function(next) {
   const user = this
   if (user.isModified("password")) {
-    user.password = await bcrypt.hash(user.password, 8)
+    user.password = await bcrypt.hash(user.password, 7)
   }
   next()
 })
-
-// userSchema.pre("remove", async function(next) {
-//   const user = this
-//   await League.update(
-//     { users: user._id },
-//     { $pull: { users: user._id } },
-//     { multi: true }
-//   ).exec()
-//   await Race.remove({ user: user._id }).exec()
-//   next()
-// })
 
 const User = mongoose.model("Users", userSchema)
 // const f = async ()=>console.log(await User.findById(mongoose.Types.ObjectId('5e25b74a7605be31006066bf')))
