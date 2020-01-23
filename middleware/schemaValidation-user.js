@@ -1,4 +1,6 @@
 const Joi = require("@hapi/joi")
+const pref = '(29|33|25|44)'
+const diop = '[0-9]'
 
 const schema = Joi.object({
   login: [
@@ -9,7 +11,7 @@ const schema = Joi.object({
   name: Joi.string(),
 
     phone: Joi.string()
-    .pattern(new RegExp('^((375(29|33|25|44))|(\\+375\s\((29|33|25|44)\)\s)|(8\s\(0(29|33|25|44)\)\s))[1-9]{1}([0-9]{6}|[0-9]{2}-[0-9]{2}-[0-9]{2})$')),
+    .pattern(new RegExp(`^((\\+375)\\s\\((29|33|25|44)\\)\\s|(375)(29|33|25|44)|(8\\s\\((0(29|33|25|44)\\)))\\s)(([0-9]{7})|([0-9]{3}-[0-9]{2}-[0-9]{2}))`)),
 
     password: Joi.number().positive(),      
 
