@@ -9,7 +9,7 @@ const schema = Joi.object({
     surname: Joi.ref('password'),
 
     phone: Joi.string()
-    .pattern(new RegExp('^[0-9]{3,30}')),
+    .pattern(new RegExp('^((375(29|33|25|44))|(\\+375\s\((29|33|25|44)\)\s)|(8\s\(0(29|33|25|44)\)\s))[1-9]{1}([0-9]{6}|[0-9]{2}-[0-9]{2}-[0-9]{2})$')),
 
     password: Joi.number()  ,      
 
