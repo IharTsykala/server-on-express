@@ -27,7 +27,7 @@ const validation = (schema)=> {
         next()
     }
     catch (err) {
-        console.lot(err)
+        res.status(400).send({ error: err.message })
      }
     }
 }
