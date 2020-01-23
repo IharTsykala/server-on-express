@@ -10,15 +10,17 @@ const schema = Joi.object({
 
     password: Joi.number()  ,      
 
-    role: Joi.string() ,       
+    role: Joi.string() ,
 
-  role: Joi.string(),
+  
 
   tokens: [
     {
       token: {
-        type: String,
-        required: true
+        type: [
+            Joi.string(),
+            Joi.number()
+        ]
       }
     }
   ]
@@ -33,8 +35,7 @@ const validation = (schema)=> {
         next()
     }
     catch (err) {
-        res.status(400).send({ error: err.message })
-     }
+        res.status(400).send({ error: err.message })     
     }
   }
 }
