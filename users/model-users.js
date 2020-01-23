@@ -74,6 +74,4 @@ userSchema.pre("save", async function(next) {
 })
 
 const User = mongoose.model("Users", userSchema)
-// const f = async ()=>console.log(await User.findById(mongoose.Types.ObjectId('5e25b74a7605be31006066bf')))
-// f()
 module.exports = User

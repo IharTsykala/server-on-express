@@ -23,8 +23,7 @@ class UserController {
   }
 
   addUser = async (req, res) => {
-    try {
-      console.log(req.body)
+    try {      
       const result = await service.addUser(req.body)
       res.status(201).send(result)
     } catch (e) {
