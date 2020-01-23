@@ -13,8 +13,7 @@ const schema = Joi.object({
 
     password: Joi.number()  ,      
 
-    role: Joi.string()     
-    
+    role: Joi.string()        
 
     })
 
