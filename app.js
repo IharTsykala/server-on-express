@@ -16,7 +16,7 @@ const port = process.env.PORT || 8080
 app.use(express.json())
 app.use("/users", routerUsers)
 app.use("/pets", routerPets)
-app.use(express.static(__dirname+"/public"), routerUpload)
+app.use(express.static(__dirname + "/public"), routerUpload)
 
 app.listen(port, () => {
   console.log("server on port " + port)

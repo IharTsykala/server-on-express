@@ -1,6 +1,7 @@
 const mongoose = require("mongoose")
 const Pet = require("../pets/model-pets")
 const User = require("./model-users")
+const ObjectId = mongoose.Types.ObjectId
 
 class ServiceUser {
   constructor() {}
@@ -29,7 +30,7 @@ class ServiceUser {
   }
 
   updateUserById = async function(id, body) {
-    try {      
+    try {
       return await User.findByIdAndUpdate(id, body)
     } catch (e) {
       console.log(e)
@@ -56,15 +57,15 @@ class ServiceUser {
     try {
       return await User.aggregate([
         {
+          $match: { _id: new ObjectId(id) }
+        },
+        {
           $lookup: {
             from: "pets",
             localField: "_id",
             foreignField: "owner",
             as: "pets"
           }
-        },
-        {
-          $match: { _id: mongoose.Types.ObjectId(id) }
         }
       ])
     } catch (e) {
@@ -85,11 +86,10 @@ class ServiceUser {
     await user.save()
   }
 
-  logOutAllDevices = async function(user, currentToken) {  
-
+  logOutAllDevices = async function(user, currentToken) {
     const ind = await user.tokens.findIndex(tkn => tkn.token === currentToken)
-    if (ind !== -1) {      
-      user.tokens = []      
+    if (ind !== -1) {
+      user.tokens = []
     } else {
       throw new Error("the token dont exist")
     }

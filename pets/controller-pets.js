@@ -25,7 +25,6 @@ class PetsController {
 
   addPets = async (req, res) => {
     try {
-      console.log(req.body)
       const result = await service.addPets(req.body)
       res.status(201).send(result)
     } catch (e) {
