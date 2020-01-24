@@ -20,5 +20,6 @@ routerUsers.post(
   user_controller.logOutCurrentDevice
 )
 routerUsers.post("/logOutAllDevices", auth, user_controller.logOutAllDevices)
+routerUsers.delete("/deleteUserWithPets/:id", auth, user_controller.deleteUserWithPets)
 
 module.exports = routerUsers
