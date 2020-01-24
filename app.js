@@ -3,8 +3,9 @@ const routerUsers = require("./users/router-users")
 const routerPets = require("./pets/router-pets")
 const routerUpload = require("./upload/router-upload")
 const mongoose = require("mongoose")
+require('dotenv').config()
 
-mongoose.connect("MONGO_DB=mongodb://127.0.0.1:27017/users", {
+mongoose.connect(process.env.BD, {
   useNewUrlParser: true,
   useCreateIndex: true,
   useFindAndModify: false,

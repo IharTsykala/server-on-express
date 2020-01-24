@@ -107,6 +107,4 @@ class ServiceUser {
   }
 }
 
-
-
 module.exports = ServiceUser
