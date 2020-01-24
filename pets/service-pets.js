@@ -20,7 +20,6 @@ class ServicePets {
   }
 
   addPets = async function(body) {
-    console.log(body)
     const pet = new Pet(body)
     try {
       await pet.save()
