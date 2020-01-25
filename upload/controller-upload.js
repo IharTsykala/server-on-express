@@ -7,7 +7,7 @@ class UploadController {
     try {
       const result = await safeImg(req.file, res)
       res.status(201).send(result)
-    } catch (e) {      
+    } catch (e) {
       res.status(400).send({ error: e.message })
     }
   }

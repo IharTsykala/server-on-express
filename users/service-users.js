@@ -96,11 +96,11 @@ class ServiceUser {
     await user.save()
   }
 
-  deleteUserWithPets =async function(id) {
+  deleteUserWithPets = async function(id) {
     try {
-       const deletePets = await Pet.deleteMany({ owner: id })
-       const deleteUser = await User.deleteOne({ _id: id })
-       return (deletePets, deleteUser)
+      const deletePets = await Pet.deleteMany({ owner: id })
+      const deleteUser = await User.deleteOne({ _id: id })
+      return deletePets, deleteUser
     } catch (e) {
       console.log(e)
     }

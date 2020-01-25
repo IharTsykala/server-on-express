@@ -10,9 +10,13 @@ routerUsers.get("/", user_controller.getAllUser)
 routerUsers.get("/:id", user_controller.getUserById)
 routerUsers.get("/pets/:id", user_controller.getUserPetsById)
 routerUsers.get("/withPets/:id", user_controller.getUserWithPetsById)
-routerUsers.post("/", validation(schema), user_controller.addUser)
-routerUsers.put("/:id", validation(schema), user_controller.updateUserById)
-routerUsers.delete("/:id", auth, user_controller.deleteUserById)
+routerUsers.post("/add", validation(schema), user_controller.addUser)
+routerUsers.put(
+  "/update/:id",
+  validation(schema),
+  user_controller.updateUserById
+)
+routerUsers.delete("/delete/:id", auth, user_controller.deleteUserById)
 routerUsers.post("/login", user_controller.loginUser)
 routerUsers.post(
   "/logOutCurrentDevice",
@@ -20,6 +24,10 @@ routerUsers.post(
   user_controller.logOutCurrentDevice
 )
 routerUsers.post("/logOutAllDevices", auth, user_controller.logOutAllDevices)
-routerUsers.delete("/deleteUserWithPets/:id", auth, user_controller.deleteUserWithPets)
+routerUsers.delete(
+  "/deleteUserWithPets/:id",
+  auth,
+  user_controller.deleteUserWithPets
+)
 
 module.exports = routerUsers
