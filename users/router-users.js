@@ -7,7 +7,7 @@ const user_controller = new UserController()
 
 const routerUsers = new express.Router()
 routerUsers.get("/", user_controller.getAllUser)
-routerUsers.get("/:id",auth, user_controller.getUserById)
+routerUsers.get("/:id", auth, user_controller.getUserById)
 routerUsers.get("/pets/:id", user_controller.getUserPetsById)
 routerUsers.get("/withPets/:id", user_controller.getUserWithPetsById)
 routerUsers.post("/add", validation(schema), user_controller.addUser)
