@@ -95,7 +95,7 @@ class UserController {
     }
   }
 
-  deleteUserWithPets = async(req, res) => {
+  deleteUserWithPets = async (req, res) => {
     try {
       const result = await service.deleteUserWithPets(req.params.id)
       res.status(201).send(result)
