@@ -16,7 +16,7 @@ routerUsers.put(
   validation(schema),
   user_controller.updateUserById
 )
-routerUsers.delete("/delete/:id", auth, user_controller.deleteUserById)
+routerUsers.delete("/delete/:id", user_controller.deleteUserById)
 routerUsers.post("/login", user_controller.loginUser)
 routerUsers.post(
   "/logOutCurrentDevice",
