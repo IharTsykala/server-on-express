@@ -4,6 +4,7 @@ const routerPets = require("./pets/router-pets")
 const routerUpload = require("./upload/router-upload")
 const mongoose = require("mongoose")
 require("dotenv").config()
+const cors = require('cors')
 
 mongoose.connect(process.env.BD, {
   useNewUrlParser: true,
@@ -25,6 +26,8 @@ app.use(function(req, res, next) {
   )
   next()
 })
+
+app.use(cors())
 
 app.use("/users", routerUsers)
 app.use("/pets", routerPets)

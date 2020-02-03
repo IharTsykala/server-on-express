@@ -3,11 +3,11 @@ const pref = "(29|33|25|44)"
 const diop = "[0-9]"
 
 const schema = Joi.object({
-  login: [Joi.string(), Joi.number()],
+  login: [Joi.string().error(new Error( 'login')), Joi.number().error(new Error( 'login'))],
 
-  firstName: Joi.string(),
+  firstName: Joi.string().error(new Error( 'lastName')),
 
-  lastName: Joi.string(),
+  lastName: Joi.string().error(new Error("lastName")),
 
   phone: Joi.string()
     .pattern(
@@ -17,13 +17,13 @@ const schema = Joi.object({
     )
     .error(new Error("invalid phone")),
 
-  password: Joi.number().positive(),
+  password: Joi.number().positive().error(new Error("password")),
 
-  email: Joi.string(),
+  email: Joi.string().error(new Error("email")),
 
-  avatar: Joi.string(),
+  avatar: Joi.string().error(new Error("avatar")),
 
-  role: Joi.string(),
+  role: Joi.string().error(new Error("role")),
 
   tokens: [
     {
@@ -36,7 +36,7 @@ const schema = Joi.object({
 
 const validation = schema => {
   return async (req, res, next) => {
-    try {
+    try {      
       const value = await schema.validateAsync(req.body)
       next()
     } catch (err) {
