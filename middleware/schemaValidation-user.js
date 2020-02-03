@@ -5,7 +5,9 @@ const diop = "[0-9]"
 const schema = Joi.object({
   login: [Joi.string(), Joi.number()],
 
-  name: Joi.string(),
+  firstName: Joi.string(),
+
+  lastName: Joi.string(),
 
   phone: Joi.string()
     .pattern(
@@ -16,6 +18,8 @@ const schema = Joi.object({
     .error(new Error("invalid phone")),
 
   password: Joi.number().positive(),
+
+  email: Joi.string(),
 
   avatar: Joi.string(),
 
