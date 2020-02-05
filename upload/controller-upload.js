@@ -4,8 +4,8 @@ class UploadController {
   constructor() {}
 
   safeImg = async (req, res) => {
-    try {      
-      const result = await safeImg(req.file, res)      
+    try {
+      const result = await safeImg(req.file, res)
       res.status(201).send(result)
     } catch (e) {
       res.status(400).send({ error: e.message })
