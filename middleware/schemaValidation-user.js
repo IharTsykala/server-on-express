@@ -6,9 +6,9 @@ const schema = Joi.object({
     Joi.number().error(new Error("login"))
   ],
 
-  firstName: Joi.string().error(new Error("lastName")).required(undefined).allow(''),
+  firstName: Joi.string().error(new Error("lastName")).allow(''),
 
-  lastName: Joi.string().error(new Error("lastName")).required(undefined).allow(''),
+  lastName: Joi.string().error(new Error("lastName")).allow(''),
 
   phone: Joi.string()
     .pattern(
@@ -20,7 +20,7 @@ const schema = Joi.object({
 
   password: Joi.number()
     .positive()
-    .error(new Error("password")),
+    .error(new Error("password")).allow(''),
 
   email: Joi.string().error(new Error("email")).allow(''),
 
