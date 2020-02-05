@@ -81,5 +81,13 @@ userSchema.pre("save", async function(next) {
   next()
 })
 
+userSchema.pre("findOneAndUpdate", async function(next) {
+  const user = this  
+  if (user._update.password.length>6) {  //   // console.log(user.isModified("password"))
+  user._update.password = await bcrypt.hash(user._update.password, 7)  
+  }
+  next()
+})
+
 const User = mongoose.model("Users", userSchema)
 module.exports = User
