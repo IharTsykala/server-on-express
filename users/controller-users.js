@@ -23,7 +23,7 @@ class UserController {
   }
 
   addUser = async (req, res) => {
-    try {      
+    try {
       const result = await service.addUser(req.body)
       res.status(201).send(result)
     } catch (e) {
@@ -95,7 +95,7 @@ class UserController {
   }
 
   deleteUserWithPets = async (req, res) => {
-    try {      
+    try {
       const result = await service.deleteUserWithPets(req.params.id)
       res.status(201).send(result)
     } catch (e) {
