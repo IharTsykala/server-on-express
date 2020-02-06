@@ -2,6 +2,7 @@ const mongoose = require("mongoose")
 const Pet = require("../pets/model-pets")
 const User = require("./model-users")
 const ObjectId = mongoose.Types.ObjectId
+const fs = require('fs-extra')
 
 class ServiceUser {
   constructor() {}
@@ -22,9 +23,12 @@ class ServiceUser {
     }
   }
 
-  addUser = async function(body) {
+  addUser = async function(body) {    
     const user = new User(body)
     await user.save()
+    if (!await fs.pathExists(`public/images/users/${user._id}`)){
+      await fs.ensureDir(`public/images/users/${user._id}`)
+    }
     const token = await user.generateAuthToken()
     return { user, token }
   }
@@ -38,7 +42,10 @@ class ServiceUser {
   }
 
   deleteUserById = async function(id) {
-    try {
+    try {      
+      if (await fs.pathExists(`public/images/users/${id}`)) {
+        await fs.remove(`public/images/users/${id}`)
+      }      
       return await User.deleteOne({ _id: id })
     } catch (e) {
       console.log(e)

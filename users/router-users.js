@@ -6,10 +6,10 @@ const { validation, schema } = require("../middleware/schemaValidation-user")
 const user_controller = new UserController()
 
 const routerUsers = new express.Router()
-routerUsers.get("/", user_controller.getAllUser)
+routerUsers.get("/", auth, user_controller.getAllUser)
 routerUsers.get("/:id", auth, user_controller.getUserById)
-routerUsers.get("/pets/:id", user_controller.getUserPetsById)
-routerUsers.get("/withPets/:id", user_controller.getUserWithPetsById)
+routerUsers.get("/pets/:id", auth, user_controller.getUserPetsById)
+routerUsers.get("/withPets/:id", auth, user_controller.getUserWithPetsById)
 routerUsers.post("/add", validation(schema), user_controller.addUser)
 routerUsers.put(
   "/update/:id",
@@ -24,7 +24,7 @@ routerUsers.post(
   auth,
   user_controller.logOutCurrentDevice
 )
-routerUsers.post("/logOutAllDevices", user_controller.logOutAllDevices)
+routerUsers.post("/logOutAllDevices", auth, user_controller.logOutAllDevices)
 routerUsers.delete(
   "/deleteUserWithPets/:id",
   auth,
