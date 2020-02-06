@@ -6,9 +6,13 @@ const schema = Joi.object({
     Joi.number().error(new Error("login"))
   ],
 
-  firstName: Joi.string().error(new Error("lastName")).allow(''),
+  firstName: Joi.string()
+    .error(new Error("lastName"))
+    .allow(""),
 
-  lastName: Joi.string().error(new Error("lastName")).allow(''),
+  lastName: Joi.string()
+    .error(new Error("lastName"))
+    .allow(""),
 
   phone: Joi.string()
     .pattern(
@@ -16,13 +20,17 @@ const schema = Joi.object({
         `^((\\+375)\\s\\((29|33|25|44)\\)\\s|(375)(29|33|25|44)|(8\\s\\((0(29|33|25|44)\\)))\\s)(([0-9]{7})|([0-9]{3}-[0-9]{2}-[0-9]{2}))`
       )
     )
-    .error(new Error("invalid phone")).allow(''),
+    .error(new Error("invalid phone"))
+    .allow(""),
 
   password: Joi.number()
     .positive()
-    .error(new Error("password")).allow(''),
+    .error(new Error("password"))
+    .allow(""),
 
-  email: Joi.string().error(new Error("email")).allow(''),
+  email: Joi.string()
+    .error(new Error("email"))
+    .allow(""),
 
   avatar: Joi.string().error(new Error("avatar")),
 

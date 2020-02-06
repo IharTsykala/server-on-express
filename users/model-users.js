@@ -82,9 +82,10 @@ userSchema.pre("save", async function(next) {
 })
 
 userSchema.pre("findOneAndUpdate", async function(next) {
-  const user = this   
-  if (user._update.password.length>7) user._update.password = await bcrypt.hash(user._update.password, 7)
-  else delete user._update.password;    
+  const user = this
+  if (user._update.password.length > 7)
+    user._update.password = await bcrypt.hash(user._update.password, 7)
+  else delete user._update.password
   next()
 })
 

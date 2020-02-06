@@ -10,7 +10,7 @@ const routerUpload = new express.Router()
 routerUpload.post(
   "/public/safeFileIntoImages",
   auth,
-  upload,  
+  upload,
   upload_controller.safeImg
 )
 
