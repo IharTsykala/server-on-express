@@ -50,6 +50,18 @@ const userSchema = new mongoose.Schema({
       }
     }
   ]
+  // subscribtion: [[subscript: {
+  //   type: String,
+  //   required: true
+  // }]],
+  // subscribers: [[subscriber: {
+  //   type: String,
+  //   required: true
+  // }]],
+  // friends: [[friend: {
+  //   type: String,
+  //   required: true
+  // }]]
 })
 
 userSchema.statics.findByCredentials = async (login, password) => {
