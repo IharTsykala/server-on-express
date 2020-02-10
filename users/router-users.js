@@ -1,6 +1,7 @@
 const express = require("express")
 const UserController = require("./controller-users.js")
 const auth = require("../middleware/auth")
+const admin = require("../middleware/admin")
 const { validation, schema } = require("../middleware/schemaValidation-user")
 
 const user_controller = new UserController()
@@ -17,6 +18,7 @@ routerUsers.put(
   auth,
   user_controller.updateUserById
 )
+// router.put('/update-another/:id', admin, user_controller.updateAnotherUserById)
 routerUsers.delete("/delete/:id", auth, user_controller.deleteUserById)
 routerUsers.post("/login", user_controller.loginUser)
 routerUsers.post(

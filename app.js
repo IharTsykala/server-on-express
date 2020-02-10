@@ -1,6 +1,7 @@
 const express = require("express")
 const routerUsers = require("./users/router-users")
 const routerPets = require("./pets/router-pets")
+const routerAlbums = require("./albums/router-albums")
 const routerUpload = require("./upload/router-upload")
 const mongoose = require("mongoose")
 require("dotenv").config()
@@ -31,6 +32,8 @@ app.use(cors())
 
 app.use("/users", routerUsers)
 app.use("/pets", routerPets)
+app.use("/albums", routerAlbums)
+
 app.use(express.static(__dirname + "/public"), routerUpload)
 
 app.listen(port, () => {
