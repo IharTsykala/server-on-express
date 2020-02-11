@@ -80,6 +80,26 @@ class ServiceUser {
     }
   }
 
+  getUserWithAlbumById = async function(id) {
+    try {
+      return await User.aggregate([
+        {
+          $match: { _id: new ObjectId(id) }
+        },
+        {
+          $lookup: {
+            from: "albums",
+            localField: "_id",
+            foreignField: "owner",
+            as: "albums"
+          }
+        }
+      ])
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
   loginUser = async function(login, password) {
     const user = await User.findByCredentials(login, password)
     const token = await user.generateAuthToken()

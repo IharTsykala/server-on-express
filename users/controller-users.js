@@ -40,14 +40,14 @@ class UserController {
     }
   }
 
-  updateAnoterUserById = async (req, res) => {
-    try {
-      const result = await service.updateUserById(req.params.id, req.body)
-      res.status(201).send(result)
-    } catch (e) {
-      res.status(400).send({ error: e.message })
-    }
-  }
+  // updateAnotherUserById = async (req, res) => {
+  //   try {
+  //     const result = await service.updateUserById(req.params.id, req.body)
+  //     res.status(201).send(result)
+  //   } catch (e) {
+  //     res.status(400).send({ error: e.message })
+  //   }
+  // }
 
   deleteUserById = async (req, res) => {
     try {
@@ -75,6 +75,16 @@ class UserController {
       res.status(400).send({ error: e.message })
     }
   }
+
+  getUserWithAlbumById = async (req, res) => {
+    try {
+      const result = await service.getUserWithAlbumById(req.params.id)
+      res.send(result)
+    } catch (e) {
+      res.status(400).send({ error: e.message })
+    }
+  }
+
 
   loginUser = async (req, res) => {
     try {
