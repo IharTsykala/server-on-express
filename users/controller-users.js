@@ -76,9 +76,18 @@ class UserController {
     }
   }
 
-  getUserWithAlbumById = async (req, res) => {
+  getUserWithAlbumsById = async (req, res) => {
     try {
-      const result = await service.getUserWithAlbumById(req.params.id)
+      const result = await service.getUserWithAlbumsById(req.params.id)
+      res.send(result)
+    } catch (e) {
+      res.status(400).send({ error: e.message })
+    }
+  }
+
+  getUserWithPhotosById = async (req, res) => {
+    try {
+      const result = await service.getUserWithPhotosById(req.params.id)
       res.send(result)
     } catch (e) {
       res.status(400).send({ error: e.message })
@@ -98,7 +107,7 @@ class UserController {
   logOutCurrentDevice = async (req, res) => {
     try {
       await service.logOutCurrentDevice(req.user, req.token)
-      res.send({ responce: "successfully logout" })
+      res.send({ response: "successfully logout" })
     } catch (e) {
       res.status(400).send({ error: e.message })
     }
@@ -107,7 +116,7 @@ class UserController {
   logOutAllDevices = async (req, res) => {
     try {
       await service.logOutAllDevices(req.user, req.token)
-      res.send({ responce: "successfully logout" })
+      res.send({ response: "successfully logout" })
     } catch (e) {
       res.status(400).send({ error: e.message })
     }

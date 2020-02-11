@@ -51,6 +51,15 @@ class AlbumsController {
       res.status(400).send({ error: e.message })
     }
   }
+
+  getAlbumWithPhotosById = async (req, res) => {
+    try {
+      const result = await service.getAlbumWithPhotosById(req.params.id)
+      res.send(result)
+    } catch (e) {
+      res.status(400).send({ error: e.message })
+    }
+  }
 }
 
 module.exports = AlbumsController

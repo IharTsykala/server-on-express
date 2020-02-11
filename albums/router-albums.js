@@ -9,5 +9,6 @@ routerAlbums.get("/:id", albums_controller.getAlbumsById)
 routerAlbums.post("/add", albums_controller.addAlbums)
 routerAlbums.put("/update/:id", albums_controller.updateAlbumsById)
 routerAlbums.delete("/delete/:id", albums_controller.deleteAlbumsById)
+routerAlbums.get("/withPhotos/:id", albums_controller.getAlbumWithPhotosById)
 
 module.exports = routerAlbums

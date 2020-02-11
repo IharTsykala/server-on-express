@@ -1,6 +1,6 @@
 const Album = require("./model-albums")
 
-class ServicePets {
+class ServiceAlbums {
   constructor() {}
 
   getAllAlbums = async function() {
@@ -45,6 +45,26 @@ class ServicePets {
       console.log(e)
     }
   }
+
+  getAlbumWithPhotosById = async function(id) {
+    try {
+      return await Album.aggregate([
+        {
+          $match: { _id: new ObjectId(id) }
+        },
+        {
+          $lookup: {
+            from: "photos",
+            localField: "_id",
+            foreignField: "ownerAlbum",
+            as: "photos"
+          }
+        }
+      ])
+    } catch (e) {
+      console.log(e)
+    }
+  }
 }
 
-module.exports = ServicePets
+module.exports = ServiceAlbums

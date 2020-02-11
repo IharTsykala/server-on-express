@@ -11,7 +11,8 @@ routerUsers.get("/", auth, user_controller.getAllUser)
 routerUsers.get("/:id", auth, user_controller.getUserById)
 routerUsers.get("/pets/:id", auth, user_controller.getUserPetsById)
 routerUsers.get("/withPets/:id", auth, user_controller.getUserWithPetsById)
-routerUsers.get("/withAlbum/:id", auth, user_controller.getUserWithAlbumById)
+routerUsers.get("/withAlbums/:id", auth, user_controller.getUserWithAlbumsById)
+routerUsers.get("/withPhotos/:id", auth, user_controller.getUserWithPhotosById)
 routerUsers.post("/add", validation(schema), user_controller.addUser)
 routerUsers.put(
   "/update/:id",
