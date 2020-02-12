@@ -16,11 +16,11 @@ routerUpload.post(
   upload_controller.safeImg
 )
 
-routerUpload.post(
-  "/public/adminSafeFileIntoImages/:id",
-  admin,
-  uploadAdmin,
-  upload_controller.safeImg
-)
+// routerUpload.post(
+//   "/public/adminSafeFileIntoImages/:id",
+//   admin,
+//   uploadAdmin,
+//   upload_controller.safeImg
+// )
 
 module.exports = routerUpload

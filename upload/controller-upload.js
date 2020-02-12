@@ -5,6 +5,7 @@ class UploadController {
 
   safeImg = async (req, res) => {
     try {
+      // console.log(req)
       const result = await safeImg(req.file, res)
       res.status(201).send(result)
     } catch (e) {

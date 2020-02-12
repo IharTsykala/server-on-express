@@ -34,6 +34,7 @@ class PhotosController {
 
   updatePhotosById = async (req, res) => {
     try {
+      console.log(req)
       const result = await service.updatePhotosById(req.params.id, req.body)
       res.status(201).send(result)
     } catch (e) {

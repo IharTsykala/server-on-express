@@ -78,6 +78,7 @@ class UserController {
 
   getUserWithAlbumsById = async (req, res) => {
     try {
+      console.log(req)
       const result = await service.getUserWithAlbumsById(req.params.id)
       res.send(result)
     } catch (e) {

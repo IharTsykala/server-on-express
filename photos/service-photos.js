@@ -13,7 +13,8 @@ class ServicePhotos {
 
   getPhotosById = async function(id) {
     try {
-      return await Photo.findById(id)
+      console.log(id)
+      return await Photo.find({ ownerUser: id }).populate("ownerUser")
     } catch (e) {
       console.log(e)
     }
@@ -30,7 +31,7 @@ class ServicePhotos {
   }
 
   updatePhotosById = async function(id, body) {
-    try {
+    try {      
       return await Photo.findByIdAndUpdate(id, body)
     } catch (e) {
       console.log(e)

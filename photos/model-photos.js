@@ -18,7 +18,11 @@ const PhotoSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "Users",
       required: true
-    }
+    },
+
+    url: {
+      type: String
+    },
 
     // ownerAlbum: {
     //   type: mongoose.Schema.Types.ObjectId,
@@ -26,7 +30,7 @@ const PhotoSchema = new mongoose.Schema(
     //   required: true
     // }
   },
-  { timestamps: true }
+  { timestamps: {createdAt: 'created_at'}}
 )
 
 const Photo = mongoose.model("Photos", PhotoSchema)

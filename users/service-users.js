@@ -35,6 +35,7 @@ class ServiceUser {
 
   updateUserById = async function(id, body) {
     try {
+      console.log(body)
       return await User.findByIdAndUpdate(id, body)
     } catch (e) {
       console.log(e)
@@ -72,26 +73,6 @@ class ServiceUser {
             localField: "_id",
             foreignField: "owner",
             as: "pets"
-          }
-        }
-      ])
-    } catch (e) {
-      console.log(e)
-    }
-  }
-
-  getUserWithAlbumById = async function(id) {
-    try {
-      return await User.aggregate([
-        {
-          $match: { _id: new ObjectId(id) }
-        },
-        {
-          $lookup: {
-            from: "albums",
-            localField: "_id",
-            foreignField: "owner",
-            as: "albums"
           }
         }
       ])
