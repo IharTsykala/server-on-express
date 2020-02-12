@@ -31,7 +31,7 @@ class ServicePhotos {
   }
 
   updatePhotosById = async function(id, body) {
-    try {      
+    try {
       return await Photo.findByIdAndUpdate(id, body)
     } catch (e) {
       console.log(e)

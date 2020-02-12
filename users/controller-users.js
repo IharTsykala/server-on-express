@@ -95,7 +95,6 @@ class UserController {
     }
   }
 
-
   loginUser = async (req, res) => {
     try {
       const result = await service.loginUser(req.body.login, req.body.password)
