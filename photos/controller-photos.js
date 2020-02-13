@@ -34,7 +34,7 @@ class PhotosController {
 
   updatePhotosById = async (req, res) => {
     try {
-      console.log(req)
+      // console.log(req)
       const result = await service.updatePhotosById(req.params.id, req.body)
       res.status(201).send(result)
     } catch (e) {
@@ -43,8 +43,9 @@ class PhotosController {
   }
 
   deletePhotosById = async (req, res) => {
-    try {
-      const result = await service.deletePhotosById(req.params.id)
+    try {      
+      const token = req.header("Authorization").replace("Bearer ", "")
+      const result = await service.deletePhotosById(req.params.id, token)
       res.status(201).send(result)
     } catch (e) {
       res.status(400).send({ error: e.message })
