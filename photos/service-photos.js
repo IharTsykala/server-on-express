@@ -42,16 +42,20 @@ class ServicePhotos {
   }
 
   deletePhotosById = async function(idPhoto, token) {
-    try {      
-      const decoded = jwt.verify(token, "IharTsykala")      
-      const idUser = decoded._id      
-      const namePhoto = await Photo.find({ _id: idPhoto }) 
+    try {
+      const decoded = jwt.verify(token, "IharTsykala")
+      const idUser = decoded._id
+      const namePhoto = await Photo.find({ _id: idPhoto })
       await Photo.deleteOne({ _id: idPhoto })
-        if (await fs.pathExists(`public/images/users/${idUser}/${namePhoto[0].name}`)) {
-          await fs.remove(`public/images/users/${idUser}/${namePhoto[0].name}`)
-        }      
-        await Photo.deleteOne({ _id: idPhoto })
-         
+      if (
+        await fs.pathExists(
+          `public/images/users/${idUser}/${namePhoto[0].name}`
+        )
+      ) {
+        await fs.remove(`public/images/users/${idUser}/${namePhoto[0].name}`)
+      }
+      await Photo.deleteOne({ _id: idPhoto })
+
       return "Photo deleted"
     } catch (e) {
       console.log(e)
