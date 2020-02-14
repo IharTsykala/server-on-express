@@ -32,6 +32,15 @@ class PhotosController {
     }
   }
 
+  addPhotosIntoAlbum = async (req, res) => {
+    try {
+      const result = await service.addPhotosIntoAlbum(req.body)
+      res.status(201).send(result)
+    } catch (e) {
+      res.status(400).send({ error: e.message })
+    }
+  }
+
   updatePhotosById = async (req, res) => {
     try {
       // console.log(req)

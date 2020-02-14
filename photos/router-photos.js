@@ -7,6 +7,7 @@ const routerPhotos = new express.Router()
 routerPhotos.get("/all", photos_controller.getAllPhotos)
 routerPhotos.get("/:id", photos_controller.getPhotosById)
 routerPhotos.post("/add", photos_controller.addPhotos)
+routerPhotos.post("/addIntoAlbum", photos_controller.addPhotosIntoAlbum)
 routerPhotos.put("/update/:id", photos_controller.updatePhotosById)
 routerPhotos.delete("/delete/:id", photos_controller.deletePhotosById)
 

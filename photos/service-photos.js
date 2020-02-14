@@ -33,6 +33,17 @@ class ServicePhotos {
     return { photo }
   }
 
+  addPhotosIntoAlbum = async function(body) {
+    console.log(body)
+    const photo = new Photo(body)
+    try {
+      await photo.save()
+    } catch (e) {
+      console.log(e)
+    }
+    return { photo }
+  }
+
   updatePhotosById = async function(id, body) {
     try {
       return await Photo.findByIdAndUpdate(id, body)

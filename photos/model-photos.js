@@ -24,11 +24,11 @@ const PhotoSchema = new mongoose.Schema(
       type: String
     },
 
-    // ownerAlbum: {
-    //   type: mongoose.Schema.Types.ObjectId,
-    //   ref: "Albums",
-    //   required: true
-    // }
+    ownerAlbum: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Albums",
+      required: true
+    }
   },
   { timestamps: {createdAt: 'created_at'}}
 )
