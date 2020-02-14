@@ -1,3 +1,5 @@
+const mongoose = require("mongoose")
+const ObjectId = mongoose.Types.ObjectId
 const Album = require("./model-albums")
 
 class ServiceAlbums {
@@ -39,7 +41,7 @@ class ServiceAlbums {
 
   deleteAlbumsById = async function(id) {
     try {
-      console.log(id)
+      // console.log(id)
       return await Album.deleteOne({ _id: id })
     } catch (e) {
       console.log(e)
@@ -64,7 +66,7 @@ class ServiceAlbums {
     } catch (e) {
       console.log(e)
     }
-  }
+  }  
 }
 
 module.exports = ServiceAlbums

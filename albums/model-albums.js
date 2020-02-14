@@ -16,7 +16,7 @@ const AlbumSchema = new mongoose.Schema(
       type: String
     },
 
-    owner: {
+    ownerUser: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Users",
       required: true

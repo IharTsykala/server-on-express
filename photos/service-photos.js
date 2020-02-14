@@ -33,14 +33,13 @@ class ServicePhotos {
     return { photo }
   }
 
-  addPhotosIntoAlbum = async function(body) {
-    console.log(body)
+  addPhotosIntoAlbum = async function(body) {    
     const photo = new Photo(body)
     try {
       await photo.save()
     } catch (e) {
       console.log(e)
-    }
+    }    
     return { photo }
   }
 

@@ -1,6 +1,7 @@
 const mongoose = require("mongoose")
 const Pet = require("../pets/model-pets")
 const User = require("./model-users")
+const Album = require("../albums/model-albums")
 const ObjectId = mongoose.Types.ObjectId
 const fs = require("fs-extra")
 
@@ -91,7 +92,7 @@ class ServiceUser {
           $lookup: {
             from: "albums",
             localField: "_id",
-            foreignField: "owner",
+            foreignField: "ownerUser",
             as: "albums"
           }
         }
@@ -100,6 +101,27 @@ class ServiceUser {
       console.log(e)
     }
   }
+
+  getListAlbumsWithPhotosByUserID = async function(id) {
+    try {      
+      return await Album.aggregate([
+        {
+          $match: { ownerUser: ObjectId(id) }
+        },
+        {
+          $lookup: {
+            from: "photos",
+            localField: "_id",
+            foreignField: "ownerAlbum",
+            as: "photos"
+          }
+        }
+      ])
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
 
   getUserWithPhotosById = async function(id) {
     try {

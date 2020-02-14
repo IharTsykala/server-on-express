@@ -13,6 +13,7 @@ routerUsers.get("/pets/:id", auth, user_controller.getUserPetsById)
 routerUsers.get("/withPets/:id", auth, user_controller.getUserWithPetsById)
 routerUsers.get("/withAlbums/:id", auth, user_controller.getUserWithAlbumsById)
 routerUsers.get("/withPhotos/:id", auth, user_controller.getUserWithPhotosById)
+routerUsers.get("/AlbumsWithPhotos/:id", user_controller.getListAlbumsWithPhotosByUserID)
 routerUsers.post("/add", validation(schema), user_controller.addUser)
 routerUsers.put(
   "/update/:id",

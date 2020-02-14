@@ -34,6 +34,7 @@ class PhotosController {
 
   addPhotosIntoAlbum = async (req, res) => {
     try {
+      // console.log(req.body)
       const result = await service.addPhotosIntoAlbum(req.body)
       res.status(201).send(result)
     } catch (e) {
