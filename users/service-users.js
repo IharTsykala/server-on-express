@@ -16,6 +16,14 @@ class ServiceUser {
     }
   }
 
+  getFilteredUsers = async function(value) {
+    try {
+      return await User.find({ login: {$regex: `${value}\.*`, $options: 'i'}})
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
   getUserById = async function(id) {
     try {
       return await User.findById(id)

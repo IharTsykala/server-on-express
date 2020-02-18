@@ -13,6 +13,16 @@ class UserController {
     }
   }
 
+  getFilteredUsers = async (req, res) => {
+    try {
+      // console.log(req.params.value)
+      const result = await service.getFilteredUsers(req.params.value)
+      res.send(result)
+    } catch (e) {
+      res.status(400).send({ error: e.message })
+    }
+  }
+
   getUserById = async (req, res) => {
     try {
       const result = await service.getUserById(req.params.id)
@@ -33,6 +43,7 @@ class UserController {
 
   updateUserById = async (req, res) => {
     try {
+      // console.log(req)
       const result = await service.updateUserById(req.params.id, req.body)
       res.status(201).send(result)
     } catch (e) {
