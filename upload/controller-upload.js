@@ -15,8 +15,8 @@ class UploadController {
 
   safeMultipleImg = async (req, res) => {
     try {
-      // console.log(req.files)
-      const result = await safeMultipleImg(req.files, res)
+      // console.log(req.query)
+      const result = await safeMultipleImg(req.files,req.query, res)
       res.status(201).send(result)
     } catch (e) {
       res.status(400).send({ error: e.message })

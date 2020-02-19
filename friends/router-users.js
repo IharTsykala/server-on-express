@@ -1,6 +1,7 @@
 const express = require("express")
 const UserController = require("./controller-users.js")
 const auth = require("../middleware/auth")
+const admin = require("../middleware/admin")
 const { validation, schema } = require("../middleware/schemaValidation-user")
 
 const user_controller = new UserController()
