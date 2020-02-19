@@ -66,7 +66,7 @@ class ServiceAlbums {
     } catch (e) {
       console.log(e)
     }
-  }  
+  }
 }
 
 module.exports = ServiceAlbums

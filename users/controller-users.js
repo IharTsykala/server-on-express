@@ -100,13 +100,14 @@ class UserController {
   getListAlbumsWithPhotosByUserID = async (req, res) => {
     try {
       // console.log(req.params.id)
-      const result = await service.getListAlbumsWithPhotosByUserID(req.params.id)
+      const result = await service.getListAlbumsWithPhotosByUserID(
+        req.params.id
+      )
       res.send(result)
     } catch (e) {
       res.status(400).send({ error: e.message })
     }
   }
-
 
   getUserWithPhotosById = async (req, res) => {
     try {

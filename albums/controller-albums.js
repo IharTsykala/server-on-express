@@ -60,7 +60,7 @@ class AlbumsController {
     } catch (e) {
       res.status(400).send({ error: e.message })
     }
-  }  
+  }
 }
 
 module.exports = AlbumsController

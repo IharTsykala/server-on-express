@@ -1,4 +1,4 @@
-const {safeImg, safeMultipleImg} = require("./service-upload")
+const { safeImg, safeMultipleImg } = require("./service-upload")
 
 class UploadController {
   constructor() {}
@@ -16,7 +16,7 @@ class UploadController {
   safeMultipleImg = async (req, res) => {
     try {
       // console.log(req.query)
-      const result = await safeMultipleImg(req.files,req.query, res)
+      const result = await safeMultipleImg(req.files, req.query, res)
       res.status(201).send(result)
     } catch (e) {
       res.status(400).send({ error: e.message })
