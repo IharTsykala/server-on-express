@@ -89,7 +89,7 @@ class UserSubscription {
   // }
 
   getUserWithSubscriptionsById = async (req, res) => {
-    try {      
+    try {
       const result = await service.getUserWithSubscriptionsById(req.params.id)
       res.send(result)
     } catch (e) {
@@ -98,7 +98,7 @@ class UserSubscription {
   }
 
   getUserWithObservablesById = async (req, res) => {
-    try {      
+    try {
       const result = await service.getUserWithObservablesById(req.params.id)
       res.send(result)
     } catch (e) {
@@ -115,7 +115,6 @@ class UserSubscription {
   //     res.status(400).send({ error: e.message })
   //   }
   // }
-
 
   // getUserWithPhotosById = async (req, res) => {
   //   try {

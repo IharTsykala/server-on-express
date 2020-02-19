@@ -18,7 +18,9 @@ class ServiceUser {
 
   getFilteredUsers = async function(value) {
     try {
-      return await User.find({ login: {$regex: `${value}\.*`, $options: 'i'}})
+      return await User.find({
+        login: { $regex: `${value}\.*`, $options: "i" }
+      })
     } catch (e) {
       console.log(e)
     }
@@ -111,7 +113,7 @@ class ServiceUser {
   }
 
   getListAlbumsWithPhotosByUserID = async function(id) {
-    try {      
+    try {
       return await Album.aggregate([
         {
           $match: { ownerUser: ObjectId(id) }
@@ -129,7 +131,6 @@ class ServiceUser {
       console.log(e)
     }
   }
-
 
   getUserWithPhotosById = async function(id) {
     try {

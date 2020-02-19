@@ -11,13 +11,21 @@ routerSubscriptions.get("/", auth, subscription_controller.getAllSubscription)
 // routerUsers.get("/filter/:value", auth, user_controller.getFilteredUsers)
 // routerUsers.get("/:id", auth, user_controller.getUserById)
 // routerUsers.get("/pets/:id", auth, user_controller.getUserPetsById)
-routerSubscriptions.get("/withSubscriptions/:id", auth, subscription_controller.getUserWithSubscriptionsById)
-routerSubscriptions.get("/withObservables/:id", auth, subscription_controller.getUserWithObservablesById)
+routerSubscriptions.get(
+  "/withSubscriptions/:id",
+  auth,
+  subscription_controller.getUserWithSubscriptionsById
+)
+routerSubscriptions.get(
+  "/withObservables/:id",
+  auth,
+  subscription_controller.getUserWithObservablesById
+)
 
 // routerUsers.get("/withAlbums/:id", auth, user_controller.getUserWithAlbumsById)
 // routerUsers.get("/withPhotos/:id", auth, user_controller.getUserWithPhotosById)
 // routerUsers.get("/AlbumsWithPhotos/:id", user_controller.getListAlbumsWithPhotosByUserID)
-routerSubscriptions.post("/add",auth, subscription_controller.addSubscription)
+routerSubscriptions.post("/add", auth, subscription_controller.addSubscription)
 // routerUsers.put(
 //   "/update/:id",
 //   validation(schema),

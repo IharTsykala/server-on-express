@@ -13,9 +13,8 @@ const SubscribeSchema = new mongoose.Schema(
       required: true
     }
   },
-  { timestamps: {createdAt: 'created_at'}}
+  { timestamps: { createdAt: "created_at" } }
 )
 
 const Subscribe = mongoose.model("Subscriptions", SubscribeSchema)
 module.exports = Subscribe
-

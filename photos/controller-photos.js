@@ -53,7 +53,7 @@ class PhotosController {
   }
 
   deletePhotosById = async (req, res) => {
-    try {      
+    try {
       const token = req.header("Authorization").replace("Bearer ", "")
       const result = await service.deletePhotosById(req.params.id, token)
       res.status(201).send(result)

@@ -30,7 +30,7 @@ const PhotoSchema = new mongoose.Schema(
       required: true
     }
   },
-  { timestamps: {createdAt: 'created_at'}}
+  { timestamps: { createdAt: "created_at" } }
 )
 
 const Photo = mongoose.model("Photos", PhotoSchema)
