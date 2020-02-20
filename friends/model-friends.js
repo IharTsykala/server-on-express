@@ -1,13 +1,13 @@
 const mongoose = require("mongoose")
-const SubscriptionSchema = new mongoose.Schema(
+const friendSchema = new mongoose.Schema(
   {
-    requestSubscriberId: {
+    requestFriendId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Users",
       required: true
     },
 
-    responseSubscriberId: {
+    responseFriendId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Users",
       required: true
@@ -16,5 +16,5 @@ const SubscriptionSchema = new mongoose.Schema(
   { timestamps: { createdAt: "created_at" } }
 )
 
-const Subscription = mongoose.model("Subscriptions", SubscriptionSchema)
-module.exports = Subscription
+const Friend = mongoose.model("Friends", friendSchema)
+module.exports = Friend

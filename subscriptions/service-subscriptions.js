@@ -1,6 +1,7 @@
 const mongoose = require("mongoose")
 const Subscription = require("./model-subscriptions")
 const fs = require("fs-extra")
+const ObjectId = mongoose.Types.ObjectId
 
 class ServiceSubscription {
   constructor() {}
@@ -21,7 +22,7 @@ class ServiceSubscription {
 
   updateUserById = async function(id, body) {
     try {
-      console.log(body)
+      // console.log(body)
       return await Subscription.findByIdAndUpdate(id, body)
     } catch (e) {
       console.log(e)
@@ -38,17 +39,26 @@ class ServiceSubscription {
     }
   }
 
-  getUserWithSubscriptionsById = async function(id) {
-    try {
-      return await Subscription.find({ subscriberId: id })
-    } catch (e) {
-      console.log(e)
-    }
-  }
+  getUserWithSubscriptionsById = async function(idLogInUser) {
+         try {              
+              const arrayAllSubscribes = await Subscription.aggregate([
+                {
+                    $match:{ $or:[{ requestSubscriberId: ObjectId(idLogInUser)}, { responseSubscriberId: ObjectId(idLogInUser) }] }                    
+                }                
+              ])              
+              const requestSubscriber = arrayAllSubscribes.filter((item)=>item.requestSubscriberId==idLogInUser)              
+              const responseSubscriber = arrayAllSubscribes.filter((item)=>item.responseSubscriberId==idLogInUser)              
+              return [requestSubscriber, responseSubscriber]              
+            }
+             catch (e) {
+              console.log(e)
+            }
+          }    
+ 
 
   getUserWithObservablesById = async function(id) {
     try {
-      return await Subscription.find({ observableId: id })
+      return await Subscription.find({ responseSubscriberId: id })
     } catch (e) {
       console.log(e)
     }
