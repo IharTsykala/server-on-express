@@ -40,21 +40,24 @@ class ServiceSubscription {
   }
 
   getUserWithSubscriptionsById = async function(idLogInUser) {
-         try {              
-              const arrayAllSubscribes = await Subscription.aggregate([
-                {
-                    $match:{ $or:[{ requestSubscriberId: ObjectId(idLogInUser)}, { responseSubscriberId: ObjectId(idLogInUser) }] }                    
-                }                
-              ])              
-              const requestSubscriber = arrayAllSubscribes.filter((item)=>item.requestSubscriberId==idLogInUser)              
-              const responseSubscriber = arrayAllSubscribes.filter((item)=>item.responseSubscriberId==idLogInUser)              
-              return [requestSubscriber, responseSubscriber]              
-            }
-             catch (e) {
-              console.log(e)
-            }
-          }    
- 
+    try {
+      return await Subscription.aggregate([
+        {
+          $match: {
+            $or: [
+              { requestSubscriberId: ObjectId(idLogInUser) },
+              { responseSubscriberId: ObjectId(idLogInUser) }
+            ]
+          }
+        }
+      ])
+      // const requestSubscriber = arrayAllSubscribes.filter((item)=>item.requestSubscriberId==idLogInUser)
+      // const responseSubscriber = arrayAllSubscribes.filter((item)=>item.responseSubscriberId==idLogInUser)
+      // return [requestSubscriber, responseSubscriber]
+    } catch (e) {
+      console.log(e)
+    }
+  }
 
   getUserWithObservablesById = async function(id) {
     try {
