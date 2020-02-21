@@ -1,7 +1,6 @@
 const ServiceSubscription = require("./service-subscriptions")
 
 const service = new ServiceSubscription()
-
 class SubscriptionController {
   constructor() {}
   getAllSubscription = async (req, res) => {
@@ -14,8 +13,7 @@ class SubscriptionController {
   }
 
   addSubscription = async (req, res) => {
-    try {
-      // console.log(req)
+    try {      
       const result = await service.addSubscription(req.body)
       res.status(201).send(result)
     } catch (e) {
@@ -36,6 +34,15 @@ class SubscriptionController {
     try {
       const result = await service.getUserWithObservablesById(req.params.id)
       res.send(result)
+    } catch (e) {
+      res.status(400).send({ error: e.message })
+    }
+  }
+
+  getUserWithSubscriptionsAndFriendsById = async (req, res) => {
+    try {      
+      const result = await service.getUserWithSubscriptionsAndFriendsById(req.params.idLogInUser)
+      res.status(201).send(result)
     } catch (e) {
       res.status(400).send({ error: e.message })
     }

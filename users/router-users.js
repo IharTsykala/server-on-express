@@ -38,5 +38,6 @@ routerUsers.delete(
   auth,
   user_controller.deleteUserWithPets
 )
+routerUsers.get("/getUserWithSubscriptionsById/:id", auth, user_controller.getUserWithSubscriptionsById)
 
 module.exports = routerUsers

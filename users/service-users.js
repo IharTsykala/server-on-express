@@ -184,6 +184,47 @@ class ServiceUser {
       console.log(e)
     }
   }
+
+getUserWithSubscriptionsById = async function(id) {
+  try {    
+    return await User.aggregate([
+            {     
+              
+              $lookup: {
+                from: "subscriptions",
+                localField: "_id",
+                foreignField: "requestSubscriberId",
+                as: "subscriptions"
+              },
+              $addFields: {  subscriptions:
+                { $cond: [{ $size: "$subscriptions" }, 'subscriber', '']}
+            }         
+            },
+          ])
+    } 
+    catch (e) {
+      console.log(e)
+    }
+  }
+
 }
 
 module.exports = ServiceUser
+
+
+ //   {
+          //     $lookup: {
+          //       from: "subscriptions",
+          //       localField: "_id",
+          //       foreignField: "responseSubscriberId",
+          //       as: "subscriptions"
+          //     }
+          //   },
+          //   {
+          //     $lookup: {
+          //       from: "friends",
+          //       localField: "_id",
+          //       foreignField: "responseSubscriberId",
+          //       as: "friends"
+          //     }
+          //   }  
