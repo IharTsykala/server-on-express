@@ -185,46 +185,67 @@ class ServiceUser {
     }
   }
 
-getUserWithSubscriptionsById = async function(id) {
-  try {    
-    return await User.aggregate([
-            {     
-              
-              $lookup: {
-                from: "subscriptions",
-                localField: "_id",
-                foreignField: "requestSubscriberId",
-                as: "subscriptions"
-              },
-              $addFields: {  subscriptions:
-                { $cond: [{ $size: "$subscriptions" }, 'subscriber', '']}
-            }         
+  getUserWithSubscriptionsById = async function(id) {
+    try {
+      console.log(`${id}`)
+      return await User.aggregate([
+        {
+          $lookup: {
+            from: "subscriptions",
+            localField: "_id",
+            foreignField: "requestSubscriberId",
+            as: "subscriptions"
+          }
+        },
+        {
+          $project: {
+            subscriptions2: {
+              $cond: [
+                {
+                  $eq: [String(`$subscriptions.responseSubscriberId`), `${id}`]
+                },
+                `subscriber`,
+                false
+              ]
             },
-          ])
-    } 
-    catch (e) {
+            role: 1,
+            // subscriptions: 1,
+            firstName: 1,
+            lastName: 1,
+            email: 1,
+            phone: 1,
+            avatar: 1
+          }
+        }
+        // .find( { subscriptions : { $eq: [ "A", "B" ] } })
+
+        // $addFields: {
+        //   subscriptions: {
+        //     $cond: [{ $size: "$subscriptions" }, "subscriber", ""]
+        //   }
+        // }
+      ])
+    } catch (e) {
       console.log(e)
     }
   }
-
 }
 
 module.exports = ServiceUser
 
-
- //   {
-          //     $lookup: {
-          //       from: "subscriptions",
-          //       localField: "_id",
-          //       foreignField: "responseSubscriberId",
-          //       as: "subscriptions"
-          //     }
-          //   },
-          //   {
-          //     $lookup: {
-          //       from: "friends",
-          //       localField: "_id",
-          //       foreignField: "responseSubscriberId",
-          //       as: "friends"
-          //     }
-          //   }  
+//   {
+//     $lookup: {
+//       from: "subscriptions",
+//       localField: "_id",
+//       foreignField: "responseSubscriberId",
+//       as: "subscriptions"
+//     }
+//   },
+//   {
+//     $lookup: {
+//       from: "friends",
+//       localField: "_id",
+//       foreignField: "responseSubscriberId",
+//       as: "friends"
+//     }
+//   }
