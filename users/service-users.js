@@ -187,26 +187,73 @@ class ServiceUser {
 
   getUserWithSubscriptionsById = async function(id) {
     try {
-      console.log(`${id}`)
+      console.log(id)
       return await User.aggregate([
         {
           $lookup: {
             from: "subscriptions",
             localField: "_id",
-            foreignField: "requestSubscriberId",
+            foreignField: "responseSubscriberId",
             as: "subscriptions"
           }
         },
+        // {
+        //   $addFields: {
+        //     subscriptions2: {
+        //       $filter: {
+        //         input: "$subscriptions.requestSubscriberLogin",
+        //         as: "field",
+        //         cond: [
+        //           {
+        //             $gte: ["$$subscriptions.requestSubscriberLogin", id]
+        //           }
+        //         ]
+        //       }
+
+        //       // $cond: [{ $gte: ["$$status", userLogin] }, "subscriber", false]
+        //     }
+        //   }
+        // }
+
+        // {
+        //   $addFields: {
+        //     subscriptions2: {
+        //       $let: {
+        //         vars: {
+        //           current: {
+        //             $cond: {
+        //               if: ["$subscriptions.requestSubscriberId", id],
+        //               then: "subscriber",
+        //               else: "false"
+        //             }
+        //           }
+        //         },
+        //         in: {"$$current"}
+        //       }
+        //     }
+        //   }
+        // }
         {
           $project: {
-            subscriptions2: {
-              $cond: [
-                {
-                  $eq: [String(`$subscriptions.responseSubscriberId`), `${id}`]
-                },
-                `subscriber`,
-                false
-              ]
+            subscriptions: {
+              $map: {
+                input: "$subscriptions",
+                as: "subscriptions",
+                in: [
+                  "$$subscriptions.requestSubscriberId",
+                  id,
+                  {
+                    $cond: {
+                      if: {
+                        $gte: ["$$subscriptions.requestSubscriberId", id]
+                      },
+                      // ["$$subscriptions", id],
+                      then: "subscriber",
+                      else: false
+                    }
+                  }
+                ]
+              }
             },
             role: 1,
             // subscriptions: 1,
@@ -217,13 +264,6 @@ class ServiceUser {
             avatar: 1
           }
         }
-        // .find( { subscriptions : { $eq: [ "A", "B" ] } })
-
-        // $addFields: {
-        //   subscriptions: {
-        //     $cond: [{ $size: "$subscriptions" }, "subscriber", ""]
-        //   }
-        // }
       ])
     } catch (e) {
       console.log(e)
@@ -249,3 +289,47 @@ module.exports = ServiceUser
 //       as: "friends"
 //     }
 //   }
+// {
+//   $project: {
+//     subscriptions2: {
+//       $cond: [
+//         {
+//           $eq: ["$subscriptions.responseSubscriberLogin", userLogin]
+//         },
+//         true,
+//         // String(id) === "5e3f1ea72b3ff42af4eb904f"
+//         userLogin
+//       ]
+//     },
+//     role: 1,
+//     subscriptions: 1,
+//     firstName: 1,
+//     lastName: 1,
+//     email: 1,
+//     phone: 1,
+//     avatar: 1
+//   }
+// }
+// .find( { subscriptions : { $eq: [ "A", "B" ] } })
+// $cond: [
+//   { $cmp: ["$subscriptions.responseSubscriberLogin", userLogin] },
+//   "subscriber",
+//   "hui"
+// ]
+
+//   $cond: {
+//     if: {
+//       $gte: ["$subscriptions.requestSubscriberLogin", userLogin]
+//     },
+//     then: `subscriber`,
+//     else: false
+//   }
+// }
+// $cond: {
+//   if: {
+//     $gte: ["$subscriptions.requestSubscriberLogin", userLogin]
+//   },
+//   then: `subscriber`,
+//   else: false
+// }
+// $eq: ["$subscriptions.requestSubscriberLogin", userLogin]

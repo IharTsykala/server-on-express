@@ -22,13 +22,12 @@ class ServiceSubscription {
   }
 
   updateUserById = async function(id, body) {
-    try {     
+    try {
       return await Subscription.findByIdAndUpdate(id, body)
     } catch (e) {
       console.log(e)
     }
   }
-
 
   deleteUserById = async function(id) {
     try {
@@ -36,7 +35,7 @@ class ServiceSubscription {
     } catch (e) {
       console.log(e)
     }
-  }  
+  }
 
   getUserWithObservablesById = async function(id) {
     try {
@@ -44,7 +43,7 @@ class ServiceSubscription {
     } catch (e) {
       console.log(e)
     }
-  } 
+  }
 }
 
 module.exports = ServiceSubscription

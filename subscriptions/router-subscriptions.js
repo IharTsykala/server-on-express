@@ -6,7 +6,6 @@ const { validation, schema } = require("../middleware/schemaValidation-user")
 const subscription_controller = new SubscriptionController()
 const routerSubscriptions = new express.Router()
 
-
 routerSubscriptions.get("/", auth, subscription_controller.getAllSubscription)
 routerSubscriptions.get(
   "/withSubscriptions/:id",
@@ -26,6 +25,6 @@ routerSubscriptions.get(
   subscription_controller.getUserWithSubscriptionsAndFriendsById
 )
 
-routerSubscriptions.post("/add", auth, subscription_controller.addSubscription)
+routerSubscriptions.post("/add", subscription_controller.addSubscription)
 
 module.exports = routerSubscriptions
