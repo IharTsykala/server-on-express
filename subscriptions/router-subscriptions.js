@@ -20,11 +20,13 @@ routerSubscriptions.get(
 )
 
 routerSubscriptions.get(
-  "/getUserWithSubscriptionsAndFriendsById/:id",
+  "/getStatusUsersSubscribeByID/:id",
   auth,
-  subscription_controller.getUserWithSubscriptionsAndFriendsById
+  subscription_controller.getStatusUsersSubscribeByID
 )
 
 routerSubscriptions.post("/add", subscription_controller.addSubscription)
+
+routerSubscriptions.post("/deleteSubscribe", subscription_controller.deleteSubscribe)
 
 module.exports = routerSubscriptions

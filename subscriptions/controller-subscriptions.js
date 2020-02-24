@@ -21,6 +21,16 @@ class SubscriptionController {
     }
   }
 
+  deleteSubscribe = async (req, res) => {
+    try {      
+      const result = await service.deleteSubscribe(req.query)
+      res.status(201).send(result)
+    } catch (e) {
+      res.status(400).send({ error: e.message })
+    }
+  }
+
+
   getUserWithSubscriptionsById = async (req, res) => {
     try {
       const result = await service.getUserWithSubscriptionsById(req.params.id)
@@ -39,14 +49,16 @@ class SubscriptionController {
     }
   }
 
-  getUserWithSubscriptionsAndFriendsById = async (req, res) => {
+  getStatusUsersSubscribeByID = async (req, res) => {
     try {      
-      const result = await service.getUserWithSubscriptionsAndFriendsById(req.params.idLogInUser)
+      const result = await service.getStatusUsersSubscribeByID(req.params.idLogInUser)
       res.status(201).send(result)
     } catch (e) {
       res.status(400).send({ error: e.message })
     }
   }
+
+
 }
 
 module.exports = SubscriptionController
