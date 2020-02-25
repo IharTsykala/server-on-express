@@ -21,15 +21,17 @@ class ServiceSubscription {
     return { subscription }
   }
 
-  deleteSubscribe = async function({idLogInUser,IdObserversUser}) {
+  deleteSubscribe = async function({ idLogInUser, IdObserversUser }) {
     try {
       const subscribe = {
         requestSubscriberId: new ObjectId(idLogInUser),
         responseSubscriberId: new ObjectId(IdObserversUser)
       }
-      const findSubscribe = await Subscription.findOne(subscribe)     
+      const findSubscribe = await Subscription.findOne(subscribe)
 
-      return await Subscription.deleteOne({"_id": new ObjectId(findSubscribe._id)})
+      return await Subscription.deleteOne({
+        _id: new ObjectId(findSubscribe._id)
+      })
     } catch (e) {
       console.log(e)
     }
