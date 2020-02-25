@@ -23,33 +23,42 @@ class FriendController {
   //   }
   // }
 
-  getLogInUserAllFriends = async (req, res) => {
+  getLogInUserAllFriends = async function(req, res) {    
     try {
       const result = await service.getLogInUserAllFriends(req.query.id)
       res.send(result)
     } catch (e) {
       res.status(400).send({ error: e.message })
     }
-  }
+  } 
+
+  getArrayFriendsByIdUser = async function(req, res) {    
+    try {
+      const result = await service.getArrayFriendsByIdUser(req.query, res)
+      res.send(result)
+    } catch (e) {
+      res.status(400).send({ error: e.message })
+    }
+  } 
 
   addFriend = async (req, res) => {
-    try {
-      console.log(req.body)
+    try {      
       const result = await service.addFriend(req.body)
       res.status(201).send(result)
     } catch (e) {
       res.status(400).send({ error: e.message })
     }
-  }
+}
+  
 
-  // deleteFriendById = async (req, res) => {
-  //   try {
-  //     const result = await service.deleteFriendById(req.params.id)
-  //     res.status(201).send(result)
-  //   } catch (e) {
-  //     res.status(400).send({ error: e.message })
-  //   }
-  // }
+  removeFriend = async (req, res) => {
+    try {        
+      const result = await service.removeFriend(req.query)
+      res.status(201).send(result)
+    } catch (e) {
+      res.status(400).send({ error: e.message })
+    }
+  }
 }
 
 module.exports = FriendController

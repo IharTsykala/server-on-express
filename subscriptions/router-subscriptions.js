@@ -27,9 +27,13 @@ routerSubscriptions.get(
 
 routerSubscriptions.post("/add", subscription_controller.addSubscription)
 
-routerSubscriptions.post(
+routerSubscriptions.delete(
   "/deleteSubscribe",
   subscription_controller.deleteSubscribe
 )
+
+routerSubscriptions.delete(
+"/deleteSubscribeAfterAddFriend",
+subscription_controller.deleteSubscribeAfterAddFriend)
 
 module.exports = routerSubscriptions

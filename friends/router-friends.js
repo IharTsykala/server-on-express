@@ -14,6 +14,17 @@ routerFriends.get(
   friend_controller.getLogInUserAllFriends
 )
 
+routerFriends.get(
+  "/getArrayFriendsByIdUser",
+  auth,
+  friend_controller.getArrayFriendsByIdUser
+)
+
 routerFriends.post("/add", auth, friend_controller.addFriend)
+
+routerFriends.delete(
+  "/removeFriend",
+  friend_controller.removeFriend
+)
 
 module.exports = routerFriends

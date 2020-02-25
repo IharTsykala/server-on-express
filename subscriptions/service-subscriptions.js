@@ -22,13 +22,27 @@ class ServiceSubscription {
   }
 
   deleteSubscribe = async function({ idLogInUser, IdObserversUser }) {
-    try {
+    try {      
       const subscribe = {
         requestSubscriberId: new ObjectId(idLogInUser),
         responseSubscriberId: new ObjectId(IdObserversUser)
-      }
-      const findSubscribe = await Subscription.findOne(subscribe)
+      }   
+      const findSubscribe = await Subscription.findOne(subscribe)     
+      return await Subscription.deleteOne({
+        _id: new ObjectId(findSubscribe._id)
+      })
+    } catch (e) {
+      console.log(e)
+    }
+  }
 
+  deleteSubscribeAfterAddFriend = async function({ IdObserversUser, idLogInUser }) {
+    try {      
+      const subscribe = {
+        requestSubscriberId: new ObjectId(IdObserversUser),
+        responseSubscriberId: new ObjectId(idLogInUser)
+      }     
+      const findSubscribe = await Subscription.findOne(subscribe)     
       return await Subscription.deleteOne({
         _id: new ObjectId(findSubscribe._id)
       })

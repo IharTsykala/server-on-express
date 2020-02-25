@@ -30,6 +30,15 @@ class SubscriptionController {
     }
   }
 
+  deleteSubscribeAfterAddFriend = async (req, res) => {
+    try {
+      const result = await service.deleteSubscribeAfterAddFriend(req.query)
+      res.status(201).send(result)
+    } catch (e) {
+      res.status(400).send({ error: e.message })
+    }
+  }
+
   getUserWithSubscriptionsById = async (req, res) => {
     try {
       const result = await service.getUserWithSubscriptionsById(req.params.id)

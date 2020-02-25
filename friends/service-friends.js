@@ -1,6 +1,7 @@
 const mongoose = require("mongoose")
 const Friend = require("./model-friends")
 const ObjectId = mongoose.Types.ObjectId
+const User = require("../users/model-users")
 
 class ServiceFriend {
   constructor() {}
@@ -41,22 +42,63 @@ class ServiceFriend {
     }
   }
 
+  getArrayFriendsByIdUser = async function({idLogInUser}) {
+    try {
+      let friends = [];      
+      const friendsRequest = await Friend.find({ requestFriendId: new ObjectId(idLogInUser) })      
+      friendsRequest.forEach(friend=>friends.push(new ObjectId(friend.responseFriendId)))
+
+      const friendsResponse = await Friend.find({ responseFriendId: new ObjectId(idLogInUser) })      
+      friendsResponse.forEach(friend=>friends.push(new ObjectId(friend.requestFriendId)))    
+
+      return await User.find({ _id: { $in: friends}, },{login: 1,
+        role: 1,
+        firstName: 1,
+        lastName: 1,
+        email: 1,
+        phone: 1,
+        avatar: 1,        
+      })
+      // console.log(responseArrayFriends)
+
+      // friends = [];
+      // responseArrayFriends = responseArrayFriends.map((friend) => Object.assign({}, friend, { subscriptions: "friend" })) 
+      // console.log(responseArrayFriends)
+      // responseArrayFriends.forEach((friend)=>friends.push(friend._doc))
+      // return friends
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
   addFriend = async function(body) {
     const friend = new Friend(body)
     await friend.save()
     return { friend }
   }
 
-  // deleteFriendById = async function(id) {
-  //   try {
-  //     if (await fs.pathExists(`public/images/Friends/${id}`)) {
-  //       await fs.remove(`public/images/Friends/${id}`)
-  //     }
-  //     return await Friend.deleteOne({ _id: id })
-  //   } catch (e) {
-  //     console.log(e)
-  //   }
-  // }
+  removeFriend = async function({ idLogInUser, IdSecondUser }) {
+    try {      
+      const friend = {
+        requestFriendId: new ObjectId(idLogInUser),
+        responseFriendId: new ObjectId(IdSecondUser)
+      }
+      const friendViseVersa = {
+        requestFriendId: new ObjectId(IdSecondUser),
+        responseFriendId: new ObjectId(idLogInUser)
+      }                  
+      let findFriend = await Friend.findOne(friend)      
+      if(findFriend===null) findFriend = await Friend.findOne(friendViseVersa)      
+
+      return await Friend.deleteOne(        
+        {
+          _id: new ObjectId(findFriend._id)
+        }
+      )
+    } catch (e) {
+      console.log(e)
+    }
+  }
 }
 
 module.exports = ServiceFriend
