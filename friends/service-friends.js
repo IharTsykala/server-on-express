@@ -58,14 +58,7 @@ class ServiceFriend {
         email: 1,
         phone: 1,
         avatar: 1,        
-      })
-      // console.log(responseArrayFriends)
-
-      // friends = [];
-      // responseArrayFriends = responseArrayFriends.map((friend) => Object.assign({}, friend, { subscriptions: "friend" })) 
-      // console.log(responseArrayFriends)
-      // responseArrayFriends.forEach((friend)=>friends.push(friend._doc))
-      // return friends
+      })      
     } catch (e) {
       console.log(e)
     }
