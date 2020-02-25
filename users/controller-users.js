@@ -162,6 +162,15 @@ class UserController {
       res.status(400).send({ error: e.message })
     }
   }
+
+  // getUserWithSubscriptionsById2 = async (req, res) => {
+  //   try {      
+  //     const result = await service.getUserWithSubscriptionsById2(req.params.id)
+  //     res.status(201).send(result)
+  //   } catch (e) {
+  //     res.status(400).send({ error: e.message })
+  //   }
+  // }
 }
 
 

@@ -40,4 +40,6 @@ routerUsers.delete(
 )
 routerUsers.get("/getUserWithSubscriptionsById/:id", auth, user_controller.getUserWithSubscriptionsById)
 
+// routerUsers.get("/getUserWithSubscriptionsById2/:id", auth, user_controller.getUserWithSubscriptionsById2)
+
 module.exports = routerUsers
