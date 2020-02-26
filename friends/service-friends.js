@@ -26,7 +26,6 @@ class ServiceFriend {
 
   getLogInUserAllFriends = async function(id) {
     try {
-      // console.log(id)
       return await Friend.aggregate([
         {
           $match: {
@@ -42,23 +41,78 @@ class ServiceFriend {
     }
   }
 
-  getArrayFriendsByIdUser = async function({idLogInUser}) {
+  getArrayFriendsByIdUser = async function({ idLogInUser }) {
     try {
-      let friends = [];      
-      const friendsRequest = await Friend.find({ requestFriendId: new ObjectId(idLogInUser) })      
-      friendsRequest.forEach(friend=>friends.push(new ObjectId(friend.responseFriendId)))
+      //   let friends = []
+      //   const friendsRequest = await Friend.find({
+      //     requestFriendId: new ObjectId(idLogInUser)
+      //   })
+      //   friendsRequest.forEach(friend =>
+      //     friends.push(new ObjectId(friend.responseFriendId))
+      //   )
 
-      const friendsResponse = await Friend.find({ responseFriendId: new ObjectId(idLogInUser) })      
-      friendsResponse.forEach(friend=>friends.push(new ObjectId(friend.requestFriendId)))    
+      //   const friendsResponse = await Friend.find({
+      //     responseFriendId: new ObjectId(idLogInUser)
+      //   })
+      //   friendsResponse.forEach(friend =>
+      //     friends.push(new ObjectId(friend.requestFriendId))
+      //   )
 
-      return await User.find({ _id: { $in: friends}, },{login: 1,
-        role: 1,
-        firstName: 1,
-        lastName: 1,
-        email: 1,
-        phone: 1,
-        avatar: 1,        
-      })      
+      //   return await User.find(
+      //     { _id: { $in: friends } },
+      //     {
+      //       login: 1,
+      //       role: 1,
+      //       firstName: 1,
+      //       lastName: 1,
+      //       email: 1,
+      //       phone: 1,
+      //       avatar: 1
+      //     }
+      //   )
+
+      let friends = await Friend.aggregate([
+        {
+          $match: {
+            $or: [
+              { requestFriendId: new ObjectId(idLogInUser) },
+              { responseFriendId: new ObjectId(idLogInUser) }
+            ]
+          }
+        },
+        {
+          $project: {
+            _id: 0,
+            friends: {
+              $cond: {
+                if: {
+                  $eq: ["$requestFriendId", new ObjectId(idLogInUser)]
+                },
+                then: "$responseFriendId",
+                else: "$requestFriendId"
+              }
+            }
+          }
+        },
+        {
+          $lookup: {
+            from: "users",
+            localField: "friends",
+            foreignField: "_id",
+            as: "friends"
+          }
+        },
+        {
+          $unwind: "$friends"
+        }
+      ])
+
+      return friends.map(friend => {
+        delete friend.friends.password
+        delete friend.friends.tokens
+        delete friend.friends.__v
+        return Object.assign({}, friend.friends, { subscription: "friend" })
+      })
     } catch (e) {
       console.log(e)
     }
@@ -71,7 +125,7 @@ class ServiceFriend {
   }
 
   removeFriend = async function({ idLogInUser, IdSecondUser }) {
-    try {      
+    try {
       const friend = {
         requestFriendId: new ObjectId(idLogInUser),
         responseFriendId: new ObjectId(IdSecondUser)
@@ -79,15 +133,14 @@ class ServiceFriend {
       const friendViseVersa = {
         requestFriendId: new ObjectId(IdSecondUser),
         responseFriendId: new ObjectId(idLogInUser)
-      }                  
-      let findFriend = await Friend.findOne(friend)      
-      if(findFriend===null) findFriend = await Friend.findOne(friendViseVersa)      
+      }
+      let findFriend = await Friend.findOne(friend)
+      if (findFriend === null)
+        findFriend = await Friend.findOne(friendViseVersa)
 
-      return await Friend.deleteOne(        
-        {
-          _id: new ObjectId(findFriend._id)
-        }
-      )
+      return await Friend.deleteOne({
+        _id: new ObjectId(findFriend._id)
+      })
     } catch (e) {
       console.log(e)
     }
