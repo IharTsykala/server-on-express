@@ -183,7 +183,180 @@ class ServiceUser {
     } catch (e) {
       console.log(e)
     }
+  }  
+
+  getUserWithSubscriptionsById = async function(id) {
+    try {
+      let responseArray = await User.aggregate([
+        {
+          $lookup: {
+            from: "subscriptions",
+            localField: "_id",
+            foreignField: "responseSubscriberId",
+            as: "subscribers"
+          }
+        },
+        {
+          $project: {
+            subscribers: {
+              $cond: {
+                if: {
+                  $size: "$subscribers"
+                },
+                then: {
+                  $size: {
+                    $filter: {
+                      input: "$subscribers",
+                      as: "subscribers",
+                      cond: {
+                        $eq: [
+                          "$$subscribers.requestSubscriberId",
+                          new ObjectId(id)
+                        ]
+                      }
+                    }
+                  }
+                },
+                else: false
+              }
+            },
+            login: 1,
+            role: 1,
+            firstName: 1,
+            lastName: 1,
+            email: 1,
+            phone: 1,
+            avatar: 1
+          }
+        },
+        {
+          $lookup: {
+            from: "subscriptions",
+            localField: "_id",
+            foreignField: "requestSubscriberId",
+            as: "observers"
+          }
+        },
+        {
+          $addFields: {
+            observers: {
+              $cond: {
+                if: {
+                  $size: "$observers"
+                },
+                then: {
+                  $size: {
+                    $filter: {
+                      input: "$observers",
+                      as: "observers",
+                      cond: {
+                        $eq: [
+                          "$$observers.responseSubscriberId",
+                          new ObjectId(id)
+                        ]
+                      }
+                    }
+                  }
+                },
+                else: false
+              }
+            }
+          }
+        },
+        {
+          $lookup: {
+            from: "friends",
+            localField: "_id",
+            foreignField: "responseFriendId",
+            as: "requestFriends"
+          }
+        },
+        {
+          $addFields: {
+            requestFriends: {
+              $cond: {
+                if: {
+                  $size: "$requestFriends"
+                },
+                then: {
+                  $size: {
+                    $filter: {
+                      input: "$requestFriends",
+                      as: "requestFriends",
+                      cond: {
+                        $eq: [
+                          "$$requestFriends.requestFriendId",
+                          new ObjectId(id)
+                        ]
+                      }
+                    }
+                  }
+                },
+                else: false
+              }
+            }
+          }
+        },
+        {
+          $lookup: {
+            from: "friends",
+            localField: "_id",
+            foreignField: "requestFriendId",
+            as: "responseFriends"
+          }
+        },
+        {
+          $addFields: {
+            responseFriends: {
+              $cond: {
+                if: {
+                  $size: "$responseFriends"
+                },
+                then: {
+                  $size: {
+                    $filter: {
+                      input: "$responseFriends",
+                      as: "responseFriends",
+                      cond: {
+                        $eq: [
+                          "$$responseFriends.responseFriendId",
+                          new ObjectId(id)
+                        ]
+                      }
+                    }
+                  }
+                },
+                else: false
+              }
+            }
+          }
+        }
+      ])
+
+      return (responseArray = responseArray.map(user => {
+        if (user.subscribers)
+          user = Object.assign({}, user, {
+            subscriptions: "subscriber"
+          })
+        if (user.observers)
+          user = Object.assign({}, user, { subscriptions: "observer" })
+        if (user.responseFriends)
+          user = Object.assign({}, user, { subscriptions: "friend" })
+        if (user.requestFriends)
+          user = Object.assign({}, user, { subscriptions: "friend" })
+        delete user.subscribers
+        delete user.observers
+        delete user.responseFriends
+        delete user.requestFriends
+        return user
+      }))
+    } catch (e) {
+      console.log(e)
+    }
   }
+}
+
+module.exports = ServiceUser
 
   // getUserWithSubscriptionsById2 = async function(id) {
   //   try {
@@ -401,302 +574,3 @@ class ServiceUser {
   //     console.log(e)
   //   }
   // }
-
-  getUserWithSubscriptionsById = async function(id) {
-    try {
-      let responseArray = await User.aggregate([
-        {
-          $lookup: {
-            from: "subscriptions",
-            localField: "_id",
-            foreignField: "responseSubscriberId",
-            as: "subscribers"
-          }
-        },
-        {
-          $project: {
-            subscribers: {
-              $cond: {
-                if: {
-                  $size: "$subscribers"
-                },
-                then: {
-                  $size: {
-                    $filter: {
-                      input: "$subscribers",
-                      as: "subscribers",
-                      cond: {
-                        $eq: [
-                          "$$subscribers.requestSubscriberId",
-                          new ObjectId(id)
-                        ]
-                      }
-                    }
-                  }
-                },
-                else: false
-              }
-            },
-            login: 1,
-            role: 1,
-            firstName: 1,
-            lastName: 1,
-            email: 1,
-            phone: 1,
-            avatar: 1
-          }
-        },
-        {
-          $lookup: {
-            from: "subscriptions",
-            localField: "_id",
-            foreignField: "requestSubscriberId",
-            as: "observers"
-          }
-        },
-        {
-          $addFields: {
-            observers: {
-              $cond: {
-                if: {
-                  $size: "$observers"
-                },
-                then: {
-                  $size: {
-                    $filter: {
-                      input: "$observers",
-                      as: "observers",
-                      cond: {
-                        $eq: [
-                          "$$observers.responseSubscriberId",
-                          new ObjectId(id)
-                        ]
-                      }
-                    }
-                  }
-                },
-                else: false
-              }
-            }
-          }
-        },
-        {
-          $lookup: {
-            from: "friends",
-            localField: "_id",
-            foreignField: "responseFriendId",
-            as: "requestFriends"
-          }
-        },
-        {
-          $addFields: {
-            requestFriends: {
-              $cond: {
-                if: {
-                  $size: "$requestFriends"
-                },
-                then: {
-                  $size: {
-                    $filter: {
-                      input: "$requestFriends",
-                      as: "requestFriends",
-                      cond: {
-                        $eq: [
-                          "$$requestFriends.requestFriendId",
-                          new ObjectId(id)
-                        ]
-                      }
-                    }
-                  }
-                },
-                else: false
-              }
-            }
-          }
-        },
-        {
-          $lookup: {
-            from: "friends",
-            localField: "_id",
-            foreignField: "requestFriendId",
-            as: "responseFriends"
-          }
-        },
-        {
-          $addFields: {
-            responseFriends: {
-              $cond: {
-                if: {
-                  $size: "$responseFriends"
-                },
-                then: {
-                  $size: {
-                    $filter: {
-                      input: "$responseFriends",
-                      as: "responseFriends",
-                      cond: {
-                        $eq: [
-                          "$$responseFriends.responseFriendId",
-                          new ObjectId(id)
-                        ]
-                      }
-                    }
-                  }
-                },
-                else: false
-              }
-            }
-          }
-        }
-      ])
-
-      return (responseArray = responseArray.map(user => {
-        if (user.subscribers)
-          user = Object.assign({}, user, {
-            subscriptions: "subscriber"
-          })
-        if (user.observers)
-          user = Object.assign({}, user, { subscriptions: "observer" })
-        if (user.responseFriends)
-          user = Object.assign({}, user, { subscriptions: "friend" })
-        if (user.requestFriends)
-          user = Object.assign({}, user, { subscriptions: "friend" })
-
-        // delete user.subscribers
-        // delete user.observers
-        // delete user.responseFriends
-        // delete user.requestFriends
-        return user
-      }))
-    } catch (e) {
-      console.log(e)
-    }
-  }
-}
-
-module.exports = ServiceUser
-
-//   {
-//     $lookup: {
-//       from: "subscriptions",
-//       localField: "_id",
-//       foreignField: "responseSubscriberId",
-//       as: "subscriptions"
-//     }
-//   },
-//   {
-//     $lookup: {
-//       from: "friends",
-//       localField: "_id",
-//       foreignField: "responseSubscriberId",
-//       as: "friends"
-//     }
-//   }
-// {
-//   $project: {
-//     subscriptions2: {
-//       $cond: [
-//         {
-//           $eq: ["$subscriptions.responseSubscriberLogin", userLogin]
-//         },
-//         true,
-//         // String(id) === "5e3f1ea72b3ff42af4eb904f"
-//         userLogin
-//       ]
-//     },
-//     role: 1,
-//     subscriptions: 1,
-//     firstName: 1,
-//     lastName: 1,
-//     email: 1,
-//     phone: 1,
-//     avatar: 1
-//   }
-// }
-// .find( { subscriptions : { $eq: [ "A", "B" ] } })
-// $cond: [
-//   { $cmp: ["$subscriptions.responseSubscriberLogin", userLogin] },
-//   "subscriber",
-//   "hui"
-// ]
-
-//   $cond: {
-//     if: {
-//       $gte: ["$subscriptions.requestSubscriberLogin", userLogin]
-//     },
-//     then: `subscriber`,
-//     else: false
-//   }
-// }
-// $cond: {
-//   if: {
-//     $gte: ["$subscriptions.requestSubscriberLogin", userLogin]
-//   },
-//   then: `subscriber`,
-//   else: false
-// }
-// $eq: ["$subscriptions.requestSubscriberLogin", userLogin]
-
-// {
-//   $addFields: {
-//     subscriptions2: {
-//       $filter: {
-//         input: "$subscriptions.requestSubscriberLogin",
-//         as: "field",
-//         cond: [
-//           {
-//             $gte: ["$$subscriptions.requestSubscriberLogin", id]
-//           }
-//         ]
-//       }
-
-//       // $cond: [{ $gte: ["$$status", userLogin] }, "subscriber", false]
-//     }
-//   }
-// }
-
-// {
-//   $addFields: {
-//     subscriptions2: {
-//       $let: {
-//         vars: {
-//           current: {
-//             $cond: {
-//               if: ["$subscriptions.requestSubscriberId", id],
-//               then: "subscriber",
-//               else: "false"
-//             }
-//           }
-//         },
-//         in: {"$$current"}
-//       }
-//     }
-//   }
-// }
-
-// $map: {
-//   input: "$subscriptions",
-//   as: "subscriptions",
-//   in: [
-//     "$$subscriptions.requestSubscriberId",
-//     id,
-//     {
-//       $cond: {
-//         if: {
-//           $gte: ["$$subscriptions.requestSubscriberId", id]
-//         },
-//         then: "subscriber",
-//         else: false
-//       }
-//     }
-//   ]
-// }
-
-//   $filter: {
-//     input: "$subscriptions",
-//     as: "subscriptions",
-//         cond:
-//             {$gte: ["$$subscriptions.requestSubscriberId", id],
-//           }
-//   }
-// },
