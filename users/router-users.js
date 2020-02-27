@@ -40,7 +40,11 @@ routerUsers.delete(
   auth,
   user_controller.deleteUserWithPets
 )
-routerUsers.get("/getUserWithSubscriptionsById/:id", auth, user_controller.getUserWithSubscriptionsById)
+routerUsers.get(
+  "/getUserWithSubscriptionsById/:id",
+  auth,
+  user_controller.getUserWithSubscriptionsById
+)
 
 // routerUsers.get("/getUserWithSubscriptionsById2/:id", auth, user_controller.getUserWithSubscriptionsById2)
 

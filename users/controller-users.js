@@ -33,7 +33,7 @@ class UserController {
   }
 
   getUserByToken = async (req, res) => {
-    try {      
+    try {
       res.send(req.user)
     } catch (e) {
       res.status(400).send({ error: e.message })
@@ -163,7 +163,7 @@ class UserController {
   }
 
   getUserWithSubscriptionsById = async (req, res) => {
-    try {      
+    try {
       const result = await service.getUserWithSubscriptionsById(req.params.id)
       res.status(201).send(result)
     } catch (e) {
@@ -172,7 +172,7 @@ class UserController {
   }
 
   // getUserWithSubscriptionsById2 = async (req, res) => {
-  //   try {      
+  //   try {
   //     const result = await service.getUserWithSubscriptionsById2(req.params.id)
   //     res.status(201).send(result)
   //   } catch (e) {
@@ -180,6 +180,5 @@ class UserController {
   //   }
   // }
 }
-
 
 module.exports = UserController
