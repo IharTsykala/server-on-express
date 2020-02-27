@@ -185,7 +185,7 @@ class ServiceUser {
     }
   }  
 
-  getUserWithSubscriptionsById = async function(id) {
+  getUserWithSubscriptionsById = async function(id) {    
     try {
       let responseArray = await User.aggregate([
         {
@@ -333,7 +333,7 @@ class ServiceUser {
         }
       ])
 
-      return (responseArray = responseArray.map(user => {
+      return responseArray.map(user => {
         if (user.subscribers)
           user = Object.assign({}, user, {
             subscriptions: "subscriber"
@@ -349,7 +349,7 @@ class ServiceUser {
         delete user.responseFriends
         delete user.requestFriends
         return user
-      }))
+      })
     } catch (e) {
       console.log(e)
     }

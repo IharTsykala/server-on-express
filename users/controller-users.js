@@ -32,6 +32,14 @@ class UserController {
     }
   }
 
+  getUserByToken = async (req, res) => {
+    try {      
+      res.send(req.user)
+    } catch (e) {
+      res.status(400).send({ error: e.message })
+    }
+  }
+
   addUser = async (req, res) => {
     try {
       const result = await service.addUser(req.body)

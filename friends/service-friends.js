@@ -111,7 +111,7 @@ class ServiceFriend {
         delete friend.friends.password
         delete friend.friends.tokens
         delete friend.friends.__v
-        return Object.assign({}, friend.friends, { subscription: "friend" })
+        return Object.assign({}, friend.friends, { subscriptions: "friend" })
       })
     } catch (e) {
       console.log(e)
