@@ -15,7 +15,7 @@ class ServiceSubscription {
     }
   }
 
-  addSubscription = async function(body) {
+  addSubscription = async function(body) {    
     const subscription = new Subscription(body)
     await subscription.save()
     return { subscription }
