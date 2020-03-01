@@ -1,19 +1,17 @@
 const express = require("express")
 const UploadController = require("./controller-upload")
-const { uploadUser } = require("../middleware/multerUser")
+const uploadAvatar = require("../middleware/multerAvatar")
 const { uploadMultipleUser } = require("../middleware/multerUser")
-const uploadAdmin = require("../middleware/multerAdmin")
 const auth = require("../middleware/auth")
-const admin = require("../middleware/admin")
 
 const upload_controller = new UploadController()
 
 const routerUpload = new express.Router()
 
 routerUpload.post(
-  "/public/userSafeFileIntoImages",
+  "/public/userSafeFileIntoImages/:id",
   auth,
-  uploadUser,
+  uploadAvatar,
   upload_controller.safeImg
 )
 
