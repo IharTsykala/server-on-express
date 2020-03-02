@@ -17,7 +17,9 @@ mongoose.connect(process.env.BD, {
   useUnifiedTopology: true
 })
 
-const app = express()
+var app = require("express")()
+var server = require("http").Server(app)
+var io = require("socket.io")(server)
 const port = process.env.PORT || 8080
 app.use(express.json())
 
@@ -45,3 +47,16 @@ app.use(express.static(__dirname + "/public"), routerUpload)
 app.listen(port, () => {
   console.log("server on port " + port)
 })
+
+io.on("connection", client => {
+  client.on("subscribeToTimer", interval => {
+    console.log("client is subscribing to timer with interval ", interval)
+    setInterval(() => {
+      client.emit("timer", new Date())
+    }, interval)
+  })
+})
+
+const serverPort = 8000
+io.listen(serverPort)
+console.log("listening on port ", serverPort)
