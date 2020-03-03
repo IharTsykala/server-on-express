@@ -6,6 +6,9 @@ const routerUpload = require("./upload/router-upload")
 const routerPhotos = require("./photos/router-photos")
 const routerSubscriptions = require("./subscriptions/router-subscriptions")
 const routerFriends = require("./friends/router-friends")
+const routerDialogs = require("./dialogs/router-dialogs")
+const MessageController = require("./messages/controller-messages")
+const message_controller = new MessageController()
 const mongoose = require("mongoose")
 require("dotenv").config()
 const cors = require("cors")
@@ -41,22 +44,28 @@ app.use("/albums", routerAlbums)
 app.use("/photos", routerPhotos)
 app.use("/subscriptions", routerSubscriptions)
 app.use("/friends", routerFriends)
-
+app.use("/dialogs", routerDialogs)
 app.use(express.static(__dirname + "/public"), routerUpload)
 
 app.listen(port, () => {
   console.log("server on port " + port)
 })
 
-io.on("connection", client => {
-  client.on("subscribeToTimer", interval => {
-    console.log("client is subscribing to timer with interval ", interval)
-    setInterval(() => {
-      client.emit("timer", new Date())
-    }, interval)
-  })
-})
-
 const serverPort = 8000
 io.listen(serverPort)
-console.log("listening on port ", serverPort)
+
+io.on("connection", socket => {   
+  // socket.on('message', (data) => {    
+  //   io.emit('receiveMessage', `${data.author}: ${data.message}` )
+  // })
+  io.of('/dialogs').on("connection", socketDialog => {    
+    socketDialog.on('messageDialog', async (data) => {       
+      socketDialog.join(data.room);      
+      const message = await message_controller.addMessage(data)         
+      io.of('/dialogs').to(data.room).emit('messageDialog', `${message.authorLogin}: ${message.message}`);
+    })   
+  })   
+})
+
+// const serverPort = 8000
+// io.listen(serverPort)
