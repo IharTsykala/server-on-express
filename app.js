@@ -54,17 +54,19 @@ app.listen(port, () => {
 const serverPort = 8000
 io.listen(serverPort)
 
-io.on("connection", socket => {   
-  // socket.on('message', (data) => {    
+io.on("connection", socket => {
+  // socket.on('message', (data) => {
   //   io.emit('receiveMessage', `${data.author}: ${data.message}` )
   // })
-  io.of('/dialogs').on("connection", socketDialog => {    
-    socketDialog.on('messageDialog', async (data) => {       
-      socketDialog.join(data.room);      
-      const message = await message_controller.addMessage(data)         
-      io.of('/dialogs').to(data.room).emit('messageDialog', `${message.authorLogin}: ${message.message}`);
-    })   
-  })   
+  io.of("/dialogs").on("connection", socketDialog => {
+    socketDialog.on("messageDialog", async data => {
+      socketDialog.join(data.room)
+      const message = await message_controller.addMessage(data)
+      io.of("/dialogs")
+        .to(data.room)
+        .emit("messageDialog", `${message.authorLogin}: ${message.message}`)
+    })
+  })
 })
 
 // const serverPort = 8000

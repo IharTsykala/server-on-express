@@ -1,12 +1,11 @@
 const mongoose = require("mongoose")
 const Dialog = require("./model-dialogs")
 
-
 class ServiceDialog {
   constructor() {}
 
   getAllDialogs = async function() {
-    try {      
+    try {
       return await Dialog.find({})
     } catch (e) {
       console.log(e)
@@ -23,12 +22,11 @@ class ServiceDialog {
 
   addDialog = async function(body) {
     try {
-    const dialog = new Dialog(body)
-    // console.log(await dialog.save())
-    return await dialog.save()    
-    }
-    catch(e) {
-    console.log(e)
+      const dialog = new Dialog(body)
+      // console.log(await dialog.save())
+      return await dialog.save()
+    } catch (e) {
+      console.log(e)
     }
   }
 

@@ -5,7 +5,7 @@ const service = new ServiceDialog()
 class DialogController {
   constructor() {}
   getAllDialog = async (req, res) => {
-    try {      
+    try {
       const result = await service.getAllDialogs()
       res.send(result)
     } catch (e) {
@@ -58,7 +58,7 @@ class DialogController {
     } catch (e) {
       res.status(400).send({ error: e.message })
     }
-  }  
+  }
 }
 
 module.exports = DialogController

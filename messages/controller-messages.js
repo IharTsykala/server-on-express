@@ -14,7 +14,7 @@ class MessageController {
   }
 
   getFilteredMessages = async (req, res) => {
-    try {      
+    try {
       const result = await service.getFilteredMessages(req.params.value)
       res.send(result)
     } catch (e) {
@@ -31,8 +31,7 @@ class MessageController {
     }
   }
 
-
-  addMessage = async (body) => {
+  addMessage = async body => {
     try {
       // console.log(body)
       return await service.addMessage(body)
@@ -43,13 +42,13 @@ class MessageController {
   }
 
   updateMessageById = async (req, res) => {
-    try {      
+    try {
       const result = await service.updateMessageById(req.params.id, req.body)
       res.status(201).send(result)
     } catch (e) {
       res.status(400).send({ error: e.message })
     }
-  }  
+  }
 }
 
 module.exports = MessageController

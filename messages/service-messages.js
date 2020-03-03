@@ -20,9 +20,9 @@ class ServiceMessage {
     }
   }
 
-  addMessage = async function(body) {    
+  addMessage = async function(body) {
     const message = new Message(body)
-    return await message.save()    
+    return await message.save()
   }
 
   updateUserById = async function(id, body) {
