@@ -51,15 +51,14 @@ app.listen(port, () => {
   console.log("server on port " + port)
 })
 
-const serverPort = 8000
-io.listen(serverPort)
-
 io.on("connection", socket => {
-  // socket.on('message', (data) => {
-  //   io.emit('receiveMessage', `${data.author}: ${data.message}` )
+  // socket.on('messageDialog', (data) => {
+  //   console.log(data)
+  //   io.emit('messageDialog', `${data.authorLogin}: ${data.message}` )
   // })
-  io.of("/dialogs").on("connection", socketDialog => {
+  io.of("/dialogs").on("connection", socketDialog => {    
     socketDialog.on("messageDialog", async data => {
+      console.log(data)
       socketDialog.join(data.room)
       const message = await message_controller.addMessage(data)
       io.of("/dialogs")
@@ -69,5 +68,5 @@ io.on("connection", socket => {
   })
 })
 
-// const serverPort = 8000
-// io.listen(serverPort)
+const serverPort = 8000
+io.listen(serverPort)
