@@ -56,7 +56,7 @@ io.on("connection", socket => {
   //   console.log(data)
   //   io.emit('messageDialog', `${data.authorLogin}: ${data.message}` )
   // })
-  io.of("/dialogs").on("connection", socketDialog => {    
+  io.of("/dialogs").on("connection", socketDialog => {
     socketDialog.on("messageDialog", async data => {
       console.log(data)
       socketDialog.join(data.room)
