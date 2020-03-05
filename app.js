@@ -7,6 +7,7 @@ const routerPhotos = require("./photos/router-photos")
 const routerSubscriptions = require("./subscriptions/router-subscriptions")
 const routerFriends = require("./friends/router-friends")
 const routerDialogs = require("./dialogs/router-dialogs")
+const routerMessages = require("./messages/router-messages")
 const MessageController = require("./messages/controller-messages")
 const message_controller = new MessageController()
 const mongoose = require("mongoose")
@@ -45,6 +46,7 @@ app.use("/photos", routerPhotos)
 app.use("/subscriptions", routerSubscriptions)
 app.use("/friends", routerFriends)
 app.use("/dialogs", routerDialogs)
+app.use("/messages", routerMessages)
 app.use(express.static(__dirname + "/public"), routerUpload)
 
 app.listen(port, () => {
@@ -56,14 +58,14 @@ io.on("connection", socket => {
   //   console.log(data)
   //   io.emit('messageDialog', `${data.authorLogin}: ${data.message}` )
   // })
-  io.of("/dialogs").on("connection", socketDialog => {
-    socketDialog.on("messageDialog", async data => {
-      console.log(data)
-      socketDialog.join(data.room)
+  io.of("/myDialogs").on("connection", socketDialog => {
+    socketDialog.on("messageDialog", async data => {     
+      socketDialog.join(data.idDialog)
       const message = await message_controller.addMessage(data)
-      io.of("/dialogs")
-        .to(data.room)
-        .emit("messageDialog", `${message.authorLogin}: ${message.message}`)
+      console.log(message)
+      io.of("/myDialogs")
+        .to(data.idDialog)
+        .emit("messageDialog", message)
     })
   })
 })

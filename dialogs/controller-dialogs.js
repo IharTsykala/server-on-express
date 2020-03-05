@@ -22,9 +22,9 @@ class DialogController {
     }
   }
 
-  getDialogById = async (req, res) => {
-    try {
-      const result = await service.getDialogById(req.params.id)
+  getAllDialogsByIdUser = async (req, res) => {
+    try {      
+      const result = await service.getAllDialogsByIdUser(req.params.id)
       res.send(result)
     } catch (e) {
       res.status(400).send({ error: e.message })

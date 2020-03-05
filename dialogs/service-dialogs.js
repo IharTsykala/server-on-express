@@ -1,5 +1,6 @@
 const mongoose = require("mongoose")
 const Dialog = require("./model-dialogs")
+const ObjectId = mongoose.Types.ObjectId
 
 class ServiceDialog {
   constructor() {}
@@ -12,9 +13,49 @@ class ServiceDialog {
     }
   }
 
-  getDialogById = async function(id) {
-    try {
-      return await Dialog.findById(id)
+  getAllDialogsByIdUser = async function(idLogInUser) {
+    try {      
+      return await Dialog.aggregate([
+        {
+          $match: {            
+              members: {  
+                $all: [ObjectId(idLogInUser)] 
+                }          
+          }
+        }
+        ,
+        {
+          $addFields: {
+           
+            members: {   
+              $filter: {
+                input: "$members",
+               as: "membersFilter",
+                cond: {                 
+                    $ne: ['$$membersFilter', ObjectId(idLogInUser)]                         
+                }
+              }               
+            }
+          }
+        },
+        {
+          $lookup: {
+            from: "users",
+            localField: "members",
+            foreignField: "_id",
+            as: "members"
+          }
+        },
+        {        
+          $unwind: "$members"        
+        },
+        {
+          $addFields: {
+            members : '$members.login'            
+          }  
+        }          
+
+      ])      
     } catch (e) {
       console.log(e)
     }
