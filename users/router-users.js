@@ -45,7 +45,6 @@ routerUsers.get(
   auth,
   user_controller.getUserWithSubscriptionsById
 )
-
-// routerUsers.get("/getUserWithSubscriptionsById2/:id", auth, user_controller.getUserWithSubscriptionsById2)
+routerUsers.post("/getUserAfterPaginationAndSearchAndFilter", auth, user_controller.getUserAfterPaginationAndSearchAndFilter)
 
 module.exports = routerUsers

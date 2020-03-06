@@ -107,6 +107,8 @@ class ServiceFriend {
         }
       ])
 
+      // console.log(friends)
+
       return friends.map(friend => {
         delete friend.friends.password
         delete friend.friends.tokens

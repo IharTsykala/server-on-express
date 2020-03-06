@@ -1,6 +1,7 @@
 const mongoose = require("mongoose")
 const Pet = require("../pets/model-pets")
 const User = require("./model-users")
+const Friend = require("../friends/model-friends")
 const Album = require("../albums/model-albums")
 const ObjectId = mongoose.Types.ObjectId
 const fs = require("fs-extra")
@@ -354,6 +355,73 @@ class ServiceUser {
       console.log(e)
     }
   }
+  getUserAfterPaginationAndSearchAndFilter = async ( body ) => {    
+    try { 
+      console.log(body)          
+    if(body.checked) {      
+       return await Friend.aggregate([
+        {
+          $match: {
+            $or: [
+              { requestFriendId: new ObjectId(body.idLogInUser) },
+              { responseFriendId: new ObjectId(body.idLogInUser) }
+            ]
+          }
+        },
+        {
+          $project: {
+            _id: 0,
+            friends: {
+              $cond: {
+                if: {
+                  $eq: ["$requestFriendId", new ObjectId(body.idLogInUser)]
+                },
+                then: "$responseFriendId",
+                else: "$requestFriendId"
+              }
+            }
+          }
+        },
+        {
+          $lookup: {
+            from: "users",
+            localField: "friends",
+            foreignField: "_id",
+            as: "friends"
+          }
+        },
+        {
+          $unwind: "$friends"
+        },
+        {
+          $match: {"friends.login" : {$regex: `${body.valueSearchBox}\.*`, $options: "i" } }
+        },
+        {
+          $skip: (body.numberPage-1)*body.limitRender+1
+        },
+        {
+          $limit: body.limitRender
+        }       
+      ])     
+    } else {
+      return await User.aggregate([
+        {
+          $match: {}
+        },       
+        {
+          $match: {"login" : {$regex: `${body.valueSearchBox}\.*`, $options: "i" } }
+        },
+        {
+          $skip: (body.numberPage-1)*body.limitRender+1
+        },
+        {
+          $limit: body.limitRender
+        }       
+      ])
+    }          
+} catch (e) {
+  console.log(e)
+}}
 }
 
 module.exports = ServiceUser
