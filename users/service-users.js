@@ -358,7 +358,7 @@ class ServiceUser {
   getUserAfterPaginationAndSearchAndFilter = async body => {
     try {
       console.log(body)
-      if (body.checked) {
+      if (body.checked & body.valueSearchBox) {
         return await Friend.aggregate([
           {
             $match: {
@@ -402,24 +402,75 @@ class ServiceUser {
             }
           },
           {
-            $skip: (body.numberPage - 1) * body.limitRender + 1
+            $skip: (body.numberPage - 1) * body.limitRender + 2
           },
           {
             $limit: body.limitRender
-          }t
+          }
         ])
-      } else {
-        return await User.aggregate([
+      } else if (body.checked & !body.valueSearchBox) {
+        return await Friend.aggregate([
           {
-            $match: {}
+            $match: {
+              $or: [
+                { requestFriendId: new ObjectId(body.idLogInUser) },
+                { responseFriendId: new ObjectId(body.idLogInUser) }
+              ]
+            }
           },
+          {
+            $project: {
+              _id: 0,
+              friends: {
+                $cond: {
+                  if: {
+                    $eq: ["$requestFriendId", new ObjectId(body.idLogInUser)]
+                  },
+                  then: "$responseFriendId",
+                  else: "$requestFriendId"
+                }
+              }
+            }
+          },
+          {
+            $lookup: {
+              from: "users",
+              localField: "friends",
+              foreignField: "_id",
+              as: "friends"
+            }
+          },
+          {
+            $unwind: "$friends"
+          },
+          {
+            $skip: (body.numberPage - 1) * body.limitRender + 2
+          },
+          {
+            $limit: body.limitRender
+          }
+        ])
+      } else if (!body.checked & body.valueSearchBox) {
+        return await User.aggregate([
           {
             $match: {
               login: { $regex: `${body.valueSearchBox}\.*`, $options: "i" }
             }
           },
           {
-            $skip: (body.numberPage - 1) * body.limitRender + 1
+            $skip: (body.numberPage - 1) * body.limitRender + 2
+          },
+          {
+            $limit: body.limitRender
+          }
+        ])
+      } else if (!body.checked & !body.valueSearchBox) {
+        return await User.aggregate([
+          {
+            $match: {}
+          },          
+          {
+            $skip: (body.numberPage - 1) * body.limitRender
           },
           {
             $limit: body.limitRender
