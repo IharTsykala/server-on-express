@@ -358,8 +358,8 @@ class ServiceUser {
   getUserAfterPaginationAndSearchAndFilter = async body => {
     try {
       console.log(body)
-      if (body.checked & body.valueSearchBox) {
-        const friends = await Friend.aggregate([
+      if (body.checked && body.valueSearchBox) {        
+        let friends = await Friend.aggregate([
           {
             $match: {
               $or: [
@@ -394,30 +394,42 @@ class ServiceUser {
             $unwind: "$friends"
           },
           {
-            $match: {
-              "friends.login": {
-                $regex: `${body.valueSearchBox}\.*`,
-                $options: "i"
-              }
+            $match: {             
+                 "friends.login": {
+                  $regex: `${body.valueSearchBox}\.*`,
+                  $options: "i" }
             }
           },
           {
-            $skip: (body.numberPage - 1) * body.limitRender + 2
+            $skip: (body.numberPage - 1) * body.limitRender
           },
           {
             $limit: body.limitRender
           }
         ])
-        return friends.map(friend => {
-          delete friend.friends.password
-          delete friend.friends.tokens
-          delete friend.friends.__v
-          return Object.assign({}, friend.friends, { subscriptions: "friend" })
-        })
 
-      } else if (body.checked & !body.valueSearchBox) {
+        let countFriends = await Friend.aggregate([
+          {
+            $match: {
+              $or: [
+                { requestFriendId: new ObjectId(body.idLogInUser) },
+                { responseFriendId: new ObjectId(body.idLogInUser) }
+              ]
+            }, 
+
+          },          
+        ])
+        // console.log(countFriends)
+        return friends.map(friend => {
+          delete friend.friends.password
+          delete friend.friends.tokens
+          delete friend.friends.__v
+          return Object.assign({}, friend.friends, { subscriptions: "friend", countUsers: countFriends.length, limitRenderUsers: body.limitRender, countPage: Math.ceil(countFriends.length/body.limitRender) })
+        })        
+
+      } else if (body.checked && !body.valueSearchBox) {
         // console.log(1)
-        const friends = await Friend.aggregate([
+        let friends = await Friend.aggregate([
           {
             $match: {
               $or: [
@@ -458,31 +470,38 @@ class ServiceUser {
             $limit: body.limitRender
           }
         ])
+
+        let countFriends = await Friend.aggregate([
+          {
+            $match: {
+              $or: [
+                { requestFriendId: new ObjectId(body.idLogInUser) },
+                { responseFriendId: new ObjectId(body.idLogInUser) }
+              ]
+            }, 
+
+          },          
+        ])
+        
         return friends.map(friend => {
           delete friend.friends.password
           delete friend.friends.tokens
           delete friend.friends.__v
-          return Object.assign({}, friend.friends, { subscriptions: "friend" })
-        })
-        // console.log(arr)
-      } else if (!body.checked & body.valueSearchBox) {
-        return await User.aggregate([
+          return Object.assign({}, friend.friends, { subscriptions: "friend",  countUsers: countFriends.length, limitRenderUsers: body.limitRender, countPage: Math.ceil(countFriends.length/body.limitRender) })
+        })         
+      } else if (!body.checked && body.valueSearchBox) {
+        // console.log(2)
+        let users = await User.aggregate([
           {
-            $match: {
-              login: { $regex: `${body.valueSearchBox}\.*`, $options: "i" }
-            }
-          },
-          {
-            $skip: (body.numberPage - 1) * body.limitRender + 2
-          },
-          {
-            $limit: body.limitRender
-          }
-        ])
-      } else if (!body.checked & !body.valueSearchBox) {
-        return await User.aggregate([
-          {
-            $match: {}
+            $match: {              
+                $or: [
+                  { "login": {
+                    $regex: `${body.valueSearchBox}\.*`,
+                    $options: "i" },
+                    "_id": {$ne: new ObjectId(body.idLogInUser)}
+                }
+                ]  
+              }
           },
           {
             $skip: (body.numberPage - 1) * body.limitRender
@@ -491,7 +510,55 @@ class ServiceUser {
             $limit: body.limitRender
           }
         ])
-      }
+
+        let countUsers = await User.aggregate([
+          {
+            $match: {
+              $or: [
+                { "login": {
+                  $regex: `${body.valueSearchBox}\.*`,
+                  $options: "i" },
+                  "_id": {$ne: new ObjectId(body.idLogInUser)}
+              }
+              ]  
+            }, 
+
+          },          
+        ])
+
+        return users.map(user => {
+          delete user.password
+          delete user.tokens
+          delete user.__v
+          return Object.assign({}, user, { countUsers: countUsers.length, limitRenderUsers: body.limitRender, countPage: Math.ceil(countUsers.length/body.limitRender) })
+        }) 
+        
+      } else if (!body.checked & !body.valueSearchBox) {
+       let users = await User.aggregate([
+          {
+            $match:   {"_id": {$ne: new ObjectId(body.idLogInUser)} } 
+          },
+          {
+            $skip: (body.numberPage - 1) * body.limitRender
+          },
+          {
+            $limit: body.limitRender
+          }
+        ])
+
+        let countUsers = await User.aggregate([
+          {
+            $match:   {"_id": {$ne: new ObjectId(body.idLogInUser)} } 
+          }       
+        ])
+
+        return users.map(user => {
+          delete user.password
+          delete user.tokens
+          delete user.__v
+          return Object.assign({}, user, { countUsers: countUsers.length, limitRenderUsers: body.limitRender, countPage: Math.ceil(countUsers.length/body.limitRender) })
+        }) 
+      }     
     } catch (e) {
       console.log(e)
     }
