@@ -359,7 +359,7 @@ class ServiceUser {
     try {
       console.log(body)
       if (body.checked & body.valueSearchBox) {
-        return await Friend.aggregate([
+        const friends = await Friend.aggregate([
           {
             $match: {
               $or: [
@@ -408,8 +408,16 @@ class ServiceUser {
             $limit: body.limitRender
           }
         ])
+        return friends.map(friend => {
+          delete friend.friends.password
+          delete friend.friends.tokens
+          delete friend.friends.__v
+          return Object.assign({}, friend.friends, { subscriptions: "friend" })
+        })
+
       } else if (body.checked & !body.valueSearchBox) {
-        return await Friend.aggregate([
+        // console.log(1)
+        const friends = await Friend.aggregate([
           {
             $match: {
               $or: [
@@ -444,12 +452,19 @@ class ServiceUser {
             $unwind: "$friends"
           },
           {
-            $skip: (body.numberPage - 1) * body.limitRender + 2
+            $skip: (body.numberPage - 1) * body.limitRender
           },
           {
             $limit: body.limitRender
           }
         ])
+        return friends.map(friend => {
+          delete friend.friends.password
+          delete friend.friends.tokens
+          delete friend.friends.__v
+          return Object.assign({}, friend.friends, { subscriptions: "friend" })
+        })
+        // console.log(arr)
       } else if (!body.checked & body.valueSearchBox) {
         return await User.aggregate([
           {
@@ -468,7 +483,7 @@ class ServiceUser {
         return await User.aggregate([
           {
             $match: {}
-          },          
+          },
           {
             $skip: (body.numberPage - 1) * body.limitRender
           },
