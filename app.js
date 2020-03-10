@@ -59,14 +59,18 @@ io.on("connection", socket => {
   //   io.emit('messageDialog', `${data.authorLogin}: ${data.message}` )
   // })
   io.of("/myDialogs").on("connection", socketDialog => {
+    // socketDialog.join('join',data.idDialog)
+    // socketDialog.disconnect(data.idDialog)
     socketDialog.on("messageDialog", async data => {     
-      socketDialog.join(data.idDialog)
+      socketDialog.join('join',data.idDialog)
+      socketDialog.disconnect(data.idDialog)
       const message = await message_controller.addMessage(data)
       console.log(message)
       io.of("/myDialogs")
         .to(data.idDialog)
         .emit("messageDialog", message)
     })
+    // socketDialog.disconnect(data.idDialog)
   })
 })
 
