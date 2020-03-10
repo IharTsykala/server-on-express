@@ -61,8 +61,8 @@ io.on("connection", socket => {
   io.of("/myDialogs").on("connection", socketDialog => {
     // socketDialog.join('join',data.idDialog)
     // socketDialog.disconnect(data.idDialog)
-    socketDialog.on("messageDialog", async data => {     
-      socketDialog.join('join',data.idDialog)
+    socketDialog.on("messageDialog", async data => {
+      socketDialog.join("join", data.idDialog)
       socketDialog.disconnect(data.idDialog)
       const message = await message_controller.addMessage(data)
       console.log(message)
@@ -70,6 +70,7 @@ io.on("connection", socket => {
         .to(data.idDialog)
         .emit("messageDialog", message)
     })
+
     // socketDialog.disconnect(data.idDialog)
   })
 })
