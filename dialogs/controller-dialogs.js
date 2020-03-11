@@ -23,7 +23,7 @@ class DialogController {
   }
 
   getAllDialogsByIdUser = async (req, res) => {
-    try {      
+    try {
       const result = await service.getAllDialogsByIdUser(req.params.id)
       res.send(result)
     } catch (e) {
@@ -33,7 +33,7 @@ class DialogController {
 
   addDialog = async (req, res) => {
     try {
-      // console.log(req.body)
+      console.log(req.body)
       const result = await service.addDialog(req.body)
       res.status(201).send(result)
     } catch (e) {

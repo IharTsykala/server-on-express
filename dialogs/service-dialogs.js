@@ -14,27 +14,28 @@ class ServiceDialog {
   }
 
   getAllDialogsByIdUser = async function(idLogInUser) {
-    try {      
+    try {
+      // console.log(idLogInUser)
+      // return
+      // const arr
       return await Dialog.aggregate([
         {
-          $match: {            
-              members: {  
-                $all: [ObjectId(idLogInUser)] 
-                }          
+          $match: {
+            members: {
+              $all: [ObjectId(idLogInUser)]
+            }
           }
-        }
-        ,
+        },
         {
           $addFields: {
-           
-            members: {   
+            members: {
               $filter: {
                 input: "$members",
-               as: "membersFilter",
-                cond: {                 
-                    $ne: ['$$membersFilter', ObjectId(idLogInUser)]                         
+                as: "membersFilter",
+                cond: {
+                  $ne: ["$$membersFilter", ObjectId(idLogInUser)]
                 }
-              }               
+              }
             }
           }
         },
@@ -46,16 +47,16 @@ class ServiceDialog {
             as: "members"
           }
         },
-        {        
-          $unwind: "$members"        
+        {
+          $unwind: "$members"
         },
         {
           $addFields: {
-            members : '$members.login'            
-          }  
-        }          
-
-      ])      
+            members: "$members.login"
+          }
+        }
+      ])
+      console.log(arr)
     } catch (e) {
       console.log(e)
     }
@@ -63,6 +64,7 @@ class ServiceDialog {
 
   addDialog = async function(body) {
     try {
+      console.log(body)
       const dialog = new Dialog(body)
       // console.log(await dialog.save())
       return await dialog.save()
