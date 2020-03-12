@@ -56,13 +56,12 @@ app.listen(port, () => {
 
 io.on("connection", socket => {
   let idRoom
-  socket.on("join", data => {
+  socket.on("join", data => {    
     idRoom = data._id
     socket.join(idRoom)
   })
   socket.on("messageDialog", async data => {
     const message = await message_controller.addMessage(data)
-
     io.to(idRoom).emit("messageDialog2", message)
   })
   socket.on("end", () => {
@@ -73,20 +72,3 @@ io.on("connection", socket => {
 const serverPort = 8000
 io.listen(serverPort)
 
-// io.on("connection", socket => {
-//   // console.log("22")
-
-//   socket.on("join", data => {
-
-//     socket.join(data._id )
-//     socket.on("messageDialog", async data2 => {
-//       const  message = await message_controller.addMessage(data2)
-//       io.to(data._id ).emit("messageDialog2", message)
-
-//     })
-//     socket.on('end', ()=>{
-//       socket.leave(data._id)
-//     })
-//   })
-
-// })
