@@ -56,7 +56,7 @@ app.listen(port, () => {
 
 io.on("connection", socket => {
   let idRoom
-  socket.on("join", data => {    
+  socket.on("join", data => {
     idRoom = data._id
     socket.join(idRoom)
   })
@@ -71,4 +71,3 @@ io.on("connection", socket => {
 
 const serverPort = 8000
 io.listen(serverPort)
-
