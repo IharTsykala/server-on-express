@@ -49,12 +49,12 @@ class ServiceDialog {
         },
         {
           $unwind: "$members"
-        },
-        {
-          $addFields: {
-            members: "$members.login"
-          }
         }
+        // {
+        //   $addFields: {
+        //     members: "$members.login"
+        //   }
+        // }
       ])
       console.log(arr)
     } catch (e) {
