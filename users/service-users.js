@@ -334,7 +334,7 @@ class ServiceUser {
         }
       ])
 
-      const length = responseArray.length      
+      const length = responseArray.length
 
       return responseArray.map(user => {
         if (user.subscribers)
