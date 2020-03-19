@@ -14,10 +14,7 @@ class ServiceDialog {
   }
 
   getAllDialogsByIdUser = async function(idLogInUser) {
-    try {
-      // console.log(idLogInUser)
-      // return
-      // const arr
+    try {     
       return await Dialog.aggregate([
         {
           $match: {

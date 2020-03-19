@@ -61,9 +61,8 @@ io.on("connection", socket => {
     socket.join(idRoom)
   })
   socket.on("messageDialog", async data => {
-    const message = await message_controller.addMessage(data)
-    console.log(message)
-    io.to(idRoom).emit("messageDialog2", message)
+    const message = await message_controller.addMessage(data)    
+    io.to(idRoom).emit("receiveMessageDialog", message)
   })
   socket.on("end", () => {
     socket.leave(idRoom)
