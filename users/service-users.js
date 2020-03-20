@@ -114,7 +114,7 @@ class ServiceUser {
   }
 
   getListAlbumsWithPhotosByUserID = async function(id) {
-    try {
+    try {      
       return await Album.aggregate([
         {
           $match: { ownerUser: ObjectId(id) }
