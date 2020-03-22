@@ -15,7 +15,7 @@ class ServicePhotos {
 
   getPhotosById = async function(id) {
     try {
-      // console.log(id)
+      console.log(Photo.find({ ownerUser: id }))
       return await Photo.find({ ownerUser: id }).populate("ownerUser")
     } catch (e) {
       console.log(e)
