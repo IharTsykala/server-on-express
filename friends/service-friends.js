@@ -43,6 +43,15 @@ class ServiceFriend {
 
   getArrayFriendsByIdUser = async function({ idLogInUser }) {
     try {
+      // const friendsRequest = await Friend.find({
+      //   $or: [
+      //     { requestFriendId: new ObjectId(idLogInUser) },
+      //     { responseFriendId: new ObjectId(idLogInUser) }
+      //   ]
+      // }).populate("requestFriendId")
+
+      // console.log(friendsRequest)
+
       //   let friends = []
       //   const friendsRequest = await Friend.find({
       //     requestFriendId: new ObjectId(idLogInUser)
@@ -71,50 +80,48 @@ class ServiceFriend {
       //     }
       //   )
 
-      let friends = await Friend.aggregate([
-        {
-          $match: {
-            $or: [
-              { requestFriendId: new ObjectId(idLogInUser) },
-              { responseFriendId: new ObjectId(idLogInUser) }
-            ]
-          }
-        },
-        {
-          $project: {
-            _id: 0,
-            friends: {
-              $cond: {
-                if: {
-                  $eq: ["$requestFriendId", new ObjectId(idLogInUser)]
-                },
-                then: "$responseFriendId",
-                else: "$requestFriendId"
+        let friends = await Friend.aggregate([
+          {
+            $match: {
+              $or: [
+                { requestFriendId: new ObjectId(idLogInUser) },
+                { responseFriendId: new ObjectId(idLogInUser) }
+              ]
+            }
+          },
+          {
+            $project: {
+              _id: 0,
+              friends: {
+                $cond: {
+                  if: {
+                    $eq: ["$requestFriendId", new ObjectId(idLogInUser)]
+                  },
+                  then: "$responseFriendId",
+                  else: "$requestFriendId"
+                }
               }
             }
+          },
+          {
+            $lookup: {
+              from: "users",
+              localField: "friends",
+              foreignField: "_id",
+              as: "friends"
+            }
+          },
+          {
+            $unwind: "$friends"
           }
-        },
-        {
-          $lookup: {
-            from: "users",
-            localField: "friends",
-            foreignField: "_id",
-            as: "friends"
-          }
-        },
-        {
-          $unwind: "$friends"
-        }
-      ])
+        ])
 
-      // console.log(friends)
-
-      return friends.map(friend => {
-        delete friend.friends.password
-        delete friend.friends.tokens
-        delete friend.friends.__v
-        return Object.assign({}, friend.friends, { subscriptions: "friend" })
-      })
+        return friends.map(friend => {
+          delete friend.friends.password
+          delete friend.friends.tokens
+          delete friend.friends.__v
+          return Object.assign({}, friend.friends, { subscriptions: "friend" })
+        })
     } catch (e) {
       console.log(e)
     }
@@ -126,27 +133,27 @@ class ServiceFriend {
     return { friend }
   }
 
-  removeFriend = async function({ idLogInUser, IdSecondUser }) {
-    try {
-      const friend = {
-        requestFriendId: new ObjectId(idLogInUser),
-        responseFriendId: new ObjectId(IdSecondUser)
-      }
-      const friendViseVersa = {
-        requestFriendId: new ObjectId(IdSecondUser),
-        responseFriendId: new ObjectId(idLogInUser)
-      }
-      let findFriend = await Friend.findOne(friend)
-      if (findFriend === null)
-        findFriend = await Friend.findOne(friendViseVersa)
+  // removeFriend = async function({ idLogInUser, IdSecondUser }) {
+  //   try {
+  //     const friend = {
+  //       requestFriendId: new ObjectId(idLogInUser),
+  //       responseFriendId: new ObjectId(IdSecondUser)
+  //     }
+  //     const friendViseVersa = {
+  //       requestFriendId: new ObjectId(IdSecondUser),
+  //       responseFriendId: new ObjectId(idLogInUser)
+  //     }
+  //     let findFriend = await Friend.findOne(friend)
+  //     if (findFriend === null)
+  //       findFriend = await Friend.findOne(friendViseVersa)
 
-      return await Friend.deleteOne({
-        _id: new ObjectId(findFriend._id)
-      })
-    } catch (e) {
-      console.log(e)
-    }
-  }
+  //     return await Friend.deleteOne({
+  //       _id: new ObjectId(findFriend._id)
+  //     })
+  //   } catch (e) {
+  //     console.log(e)
+  //   }
+  // }
 }
 
 module.exports = ServiceFriend

@@ -62,8 +62,7 @@ class ServiceDialog {
   addDialog = async function(body) {
     try {
       console.log(body)
-      const dialog = new Dialog(body)
-      // console.log(await dialog.save())
+      const dialog = new Dialog(body)      
       return await dialog.save()
     } catch (e) {
       console.log(e)

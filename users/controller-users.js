@@ -127,8 +127,7 @@ class UserController {
   }
 
   loginUser = async (req, res) => {
-    try {
-      console.log(req.body)
+    try {      
       const result = await service.loginUser(req.body.login, req.body.password)
       res.status(201).send(result)
     } catch (e) {

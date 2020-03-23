@@ -22,8 +22,7 @@ class ServicePhotos {
     }
   }
 
-  addPhotos = async function(body) {
-    // console.log(body)
+  addPhotos = async function(body) {   
     const photo = new Photo(body)
     try {
       await photo.save()

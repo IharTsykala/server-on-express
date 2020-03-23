@@ -114,7 +114,7 @@ class ServiceUser {
   }
 
   getListAlbumsWithPhotosByUserID = async function(id) {
-    try {      
+    try {
       return await Album.aggregate([
         {
           $match: { ownerUser: ObjectId(id) }
@@ -421,7 +421,7 @@ class ServiceUser {
             }
           }
         ])
-        // console.log(countFriends)
+        
         return friends.map(friend => {
           delete friend.friends.password
           delete friend.friends.tokens
@@ -432,9 +432,10 @@ class ServiceUser {
             limitRenderUsers: body.limitRender,
             countPage: Math.ceil(countFriends.length / body.limitRender)
           })
-        })
-      } else if (body.checked && !body.valueSearchBox) {
-        // console.log(1)
+        })        
+      } 
+      
+      else if (body.checked && !body.valueSearchBox) {        
         let friends = await Friend.aggregate([
           {
             $match: {
@@ -499,8 +500,9 @@ class ServiceUser {
             countPage: Math.ceil(countFriends.length / body.limitRender)
           })
         })
-      } else if (!body.checked && body.valueSearchBox) {
-        // console.log(2)
+      }
+      
+      else if (!body.checked && body.valueSearchBox) {
         let users = await User.aggregate([
           {
             $match: {
@@ -549,7 +551,9 @@ class ServiceUser {
             countPage: Math.ceil(countUsers.length / body.limitRender)
           })
         })
-      } else if (!body.checked & !body.valueSearchBox) {
+      }
+      
+      else if (!body.checked & !body.valueSearchBox) {
         let users = await User.aggregate([
           {
             $match: { _id: { $ne: new ObjectId(body.idLogInUser) } }
