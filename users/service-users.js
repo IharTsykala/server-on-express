@@ -334,8 +334,6 @@ class ServiceUser {
         }
       ])
 
-      const length = responseArray.length
-
       return responseArray.map(user => {
         if (user.subscribers)
           user = Object.assign({}, user, {
@@ -421,7 +419,7 @@ class ServiceUser {
             }
           }
         ])
-        
+
         return friends.map(friend => {
           delete friend.friends.password
           delete friend.friends.tokens
@@ -432,10 +430,8 @@ class ServiceUser {
             limitRenderUsers: body.limitRender,
             countPage: Math.ceil(countFriends.length / body.limitRender)
           })
-        })        
-      } 
-      
-      else if (body.checked && !body.valueSearchBox) {        
+        })
+      } else if (body.checked && !body.valueSearchBox) {
         let friends = await Friend.aggregate([
           {
             $match: {
@@ -500,9 +496,7 @@ class ServiceUser {
             countPage: Math.ceil(countFriends.length / body.limitRender)
           })
         })
-      }
-      
-      else if (!body.checked && body.valueSearchBox) {
+      } else if (!body.checked && body.valueSearchBox) {
         let users = await User.aggregate([
           {
             $match: {
@@ -551,9 +545,7 @@ class ServiceUser {
             countPage: Math.ceil(countUsers.length / body.limitRender)
           })
         })
-      }
-      
-      else if (!body.checked & !body.valueSearchBox) {
+      } else if (!body.checked & !body.valueSearchBox) {
         let users = await User.aggregate([
           {
             $match: { _id: { $ne: new ObjectId(body.idLogInUser) } }
