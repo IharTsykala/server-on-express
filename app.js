@@ -22,8 +22,8 @@ mongoose.connect(process.env.BD, {
 })
 
 var app = require("express")()
-// var server = require("http").Server(app)
-// var io = require("socket.io")(server)
+var server = require("http").Server(app)
+var io = require("socket.io")(server)
 const port = process.env.PORT || 8080
 
 app.use(express.json())
@@ -61,20 +61,20 @@ app.listen(port, () => {
   console.log("server on port " + port)
 })
 
-// io.on("connection", socket => {
-//   let idRoom
-//   socket.on("join", data => {
-//     idRoom = data._id
-//     socket.join(idRoom)
-//   })
-//   socket.on("messageDialog", async data => {
-//     const message = await message_controller.addMessage(data)
-//     io.to(idRoom).emit("receiveMessageDialog", message)
-//   })
-//   socket.on("end", () => {
-//     socket.leave(idRoom)
-//   })
-// })
+io.on("connection", socket => {
+  let idRoom
+  socket.on("join", data => {
+    idRoom = data._id
+    socket.join(idRoom)
+  })
+  socket.on("messageDialog", async data => {
+    const message = await message_controller.addMessage(data)
+    io.to(idRoom).emit("receiveMessageDialog", message)
+  })
+  socket.on("end", () => {
+    socket.leave(idRoom)
+  })
+})
 
-// const serverPort = 8000
-// io.listen(serverPort)
+const serverPort = 8000
+io.listen(serverPort)
