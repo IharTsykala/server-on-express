@@ -2,5 +2,5 @@ node_modules
 service-users-draft.js
 dataBase.JSON
 /public/images/users/
-.env
+# .env
 .env.exemple

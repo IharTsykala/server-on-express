@@ -14,16 +14,12 @@ const mongoose = require("mongoose")
 require("dotenv").config()
 const cors = require("cors")
 
-mongoose.connect(
-  process.env.BD ||
-    "mongodb+srv://IharTsykala:ioMtBYKxCQaOd7Mg@dbfrommyhouse1-ceawd.mongodb.net/dbFromMyHouse1?retryWrites=true&w=majority",
-  {
-    useNewUrlParser: true,
-    useCreateIndex: true,
-    useFindAndModify: false,
-    useUnifiedTopology: true
-  }
-)
+mongoose.connect(process.env.BD, {
+  useNewUrlParser: true,
+  useCreateIndex: true,
+  useFindAndModify: false,
+  useUnifiedTopology: true
+})
 
 var app = require("express")()
 // var server = require("http").Server(app)
