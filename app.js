@@ -10,7 +10,7 @@ const routerDialogs = require("./dialogs/router-dialogs")
 const routerMessages = require("./messages/router-messages")
 const MessageController = require("./messages/controller-messages")
 const message_controller = new MessageController()
-const mongoose = require("mongoose")
+// const mongoose = require("mongoose")
 require("dotenv").config()
 const cors = require("cors")
 
@@ -22,8 +22,8 @@ const cors = require("cors")
 // })
 
 var app = require("express")()
-var server = require("http").Server(app)
-var io = require("socket.io")(server)
+// var server = require("http").Server(app)
+// var io = require("socket.io")(server)
 const port = process.env.PORT || 8080
 
 app.use(express.json())
@@ -54,20 +54,20 @@ app.listen(port, () => {
   console.log("server on port " + port)
 })
 
-io.on("connection", socket => {
-  let idRoom
-  socket.on("join", data => {
-    idRoom = data._id
-    socket.join(idRoom)
-  })
-  socket.on("messageDialog", async data => {
-    const message = await message_controller.addMessage(data)
-    io.to(idRoom).emit("receiveMessageDialog", message)
-  })
-  socket.on("end", () => {
-    socket.leave(idRoom)
-  })
-})
+// io.on("connection", socket => {
+//   let idRoom
+//   socket.on("join", data => {
+//     idRoom = data._id
+//     socket.join(idRoom)
+//   })
+//   socket.on("messageDialog", async data => {
+//     const message = await message_controller.addMessage(data)
+//     io.to(idRoom).emit("receiveMessageDialog", message)
+//   })
+//   socket.on("end", () => {
+//     socket.leave(idRoom)
+//   })
+// })
 
-const serverPort = 8000
-io.listen(serverPort)
+// const serverPort = 8000
+// io.listen(serverPort)
