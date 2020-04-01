@@ -1,5 +1,5 @@
 const express = require("express")
-const FriendController = require("./controller-Friends.js")
+const FriendController = require("./controller-friends.js")
 const auth = require("../middleware/auth")
 const admin = require("../middleware/admin")
 
@@ -22,9 +22,6 @@ routerFriends.get(
 
 routerFriends.post("/add", auth, friend_controller.addFriend)
 
-routerFriends.delete(
-  "/removeFriend",
-  friend_controller.removeFriend
-)
+routerFriends.delete("/removeFriend", friend_controller.removeFriend)
 
 module.exports = routerFriends
