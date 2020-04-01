@@ -40,13 +40,6 @@ app.use(function(req, res, next) {
 
 app.use(cors())
 
-app.get("/", (req, res) => {
-  res.end(`<div>
-              <h1>Home page</h1>
-              <a href="/about">About</a>
-          </div>`)
-})
-
 app.use("/users", routerUsers)
 app.use("/pets", routerPets)
 app.use("/albums", routerAlbums)
