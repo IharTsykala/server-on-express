@@ -10,16 +10,16 @@ const express = require("express")
 // const routerMessages = require("./messages/router-messages")
 // const MessageController = require("./messages/controller-messages")
 // const message_controller = new MessageController()
-// const mongoose = require("mongoose")
+const mongoose = require("mongoose")
 require("dotenv").config()
 const cors = require("cors")
 
-// mongoose.connect(process.env.BD, {
-//   useNewUrlParser: true,
-//   useCreateIndex: true,
-//   useFindAndModify: false,
-//   useUnifiedTopology: true
-// })
+mongoose.connect(process.env.BD, {
+  useNewUrlParser: true,
+  useCreateIndex: true,
+  useFindAndModify: false,
+  useUnifiedTopology: true
+})
 
 var app = require("express")()
 // var server = require("http").Server(app)
