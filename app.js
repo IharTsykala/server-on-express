@@ -40,15 +40,15 @@ app.use(function(req, res, next) {
 
 app.use(cors())
 
-app.use("/users", routerUsers)
-app.use("/pets", routerPets)
-app.use("/albums", routerAlbums)
-app.use("/photos", routerPhotos)
-app.use("/subscriptions", routerSubscriptions)
-app.use("/friends", routerFriends)
-app.use("/dialogs", routerDialogs)
-app.use("/messages", routerMessages)
-app.use(express.static(__dirname + "/public"), routerUpload)
+// app.use("/users", routerUsers)
+// app.use("/pets", routerPets)
+// app.use("/albums", routerAlbums)
+// app.use("/photos", routerPhotos)
+// app.use("/subscriptions", routerSubscriptions)
+// app.use("/friends", routerFriends)
+// app.use("/dialogs", routerDialogs)
+// app.use("/messages", routerMessages)
+// app.use(express.static(__dirname + "/public"), routerUpload)
 
 app.listen(port, () => {
   console.log("server on port " + port)
