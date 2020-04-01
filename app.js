@@ -76,5 +76,5 @@ io.on("connection", socket => {
   })
 })
 
-const serverPort = 8000
+const serverPort = process.env.PORTSOCKET || 8000
 io.listen(serverPort)
