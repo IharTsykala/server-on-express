@@ -40,6 +40,13 @@ app.use(function(req, res, next) {
 
 app.use(cors())
 
+app.get("/", (req, res) => {
+  res.end(`<div>
+              <h1>Hello on Heroku</h1>
+              <a href="#">About</a>
+          </div>`)
+})
+
 app.use("/users", routerUsers)
 app.use("/pets", routerPets)
 app.use("/albums", routerAlbums)
