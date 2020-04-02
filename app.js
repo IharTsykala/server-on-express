@@ -42,7 +42,7 @@ app.use(cors())
 
 app.get("/", (req, res) => {
   res.end(`<div>
-              <h1>Hello on Heroku</h1>
+              <h1>This server was to link with the Heroku</h1>
               <a href="#">About</a>
           </div>`)
 })
