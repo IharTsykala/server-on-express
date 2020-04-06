@@ -9,6 +9,7 @@ const routerFriends = require("./friends/router-friends")
 const routerDialogs = require("./dialogs/router-dialogs")
 const routerMessages = require("./messages/router-messages")
 const MessageController = require("./messages/controller-messages")
+
 const message_controller = new MessageController()
 const mongoose = require("mongoose")
 require("dotenv").config()
@@ -18,17 +19,18 @@ mongoose.connect(process.env.BD, {
   useNewUrlParser: true,
   useCreateIndex: true,
   useFindAndModify: false,
-  useUnifiedTopology: true
+  useUnifiedTopology: true,
 })
 
-var app = require("express")()
-var server = require("http").Server(app)
-var io = require("socket.io")(server)
+const app = require("express")()
+const server = require("http").Server(app)
+const io = require("socket.io")(server)
+
 const port = process.env.PORT || 8080
 
 app.use(express.json())
 
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   res.header("Access-Control-Allow-Origin", "*")
   res.header("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE")
   res.header(
@@ -55,19 +57,19 @@ app.use("/subscriptions", routerSubscriptions)
 app.use("/friends", routerFriends)
 app.use("/dialogs", routerDialogs)
 app.use("/messages", routerMessages)
-app.use(express.static(__dirname + "/public"), routerUpload)
+app.use(express.static(`${__dirname}/public`), routerUpload)
 
 app.listen(port, () => {
-  console.log("server on port " + port)
+  console.log(`server on port ${port}`)
 })
 
-io.on("connection", socket => {
+io.on("connection", (socket) => {
   let idRoom
-  socket.on("join", data => {
+  socket.on("join", (data) => {
     idRoom = data._id
     socket.join(idRoom)
   })
-  socket.on("messageDialog", async data => {
+  socket.on("messageDialog", async (data) => {
     const message = await message_controller.addMessage(data)
     io.to(idRoom).emit("receiveMessageDialog", message)
   })
