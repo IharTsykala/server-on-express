@@ -15,7 +15,6 @@ class UserController {
 
   getFilteredUsers = async (req, res) => {
     try {
-      // console.log(req.params.value)
       const result = await service.getFilteredUsers(req.params.value);
       res.send(result);
     } catch (e) {
@@ -51,7 +50,6 @@ class UserController {
 
   updateUserById = async (req, res) => {
     try {
-      // console.log(req)
       const result = await service.updateUserById(req.params.id, req.body);
       res.status(201).send(result);
     } catch (e) {
@@ -97,7 +95,6 @@ class UserController {
 
   getUserWithAlbumsById = async (req, res) => {
     try {
-      // console.log(req)
       const result = await service.getUserWithAlbumsById(req.params.id);
       res.send(result);
     } catch (e) {
@@ -107,7 +104,6 @@ class UserController {
 
   getListAlbumsWithPhotosByUserID = async (req, res) => {
     try {
-      // console.log(req.params.id)
       const result = await service.getListAlbumsWithPhotosByUserID(
         req.params.id
       );
