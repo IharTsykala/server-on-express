@@ -1,6 +1,6 @@
-const ServiceMessage = require("./service-messages")
+const ServiceMessage = require("./service-messages");
 
-const service = new ServiceMessage()
+const service = new ServiceMessage();
 
 class MessageController {
   constructor() {}
@@ -24,22 +24,21 @@ class MessageController {
 
   getMessagesByIdDialog = async (req, res) => {
     try {
-      const result = await service.getMessagesByIdDialog(req.params.id)
-      res.send(result)
+      const result = await service.getMessagesByIdDialog(req.params.id);
+      res.send(result);
     } catch (e) {
-      res.status(400).send({ error: e.message })
+      res.status(400).send({ error: e.message });
     }
-  }
+  };
 
-  addMessage = async body => {
+  addMessage = async (body) => {
     try {
-      // console.log(body)
-      return await service.addMessage(body)
+      return await service.addMessage(body);
       // res.status(201).send(result)
     } catch (e) {
-      console.log(e)
+      console.log(e);
     }
-  }
+  };
 
   // updateMessageById = async (req, res) => {
   //   try {
@@ -51,4 +50,4 @@ class MessageController {
   // }
 }
 
-module.exports = MessageController
+module.exports = MessageController;

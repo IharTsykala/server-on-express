@@ -1,6 +1,6 @@
-const mongoose = require("mongoose")
-const Message = require("./model-messages")
-const ObjectId = mongoose.Types.ObjectId
+const mongoose = require("mongoose");
+const Message = require("./model-messages");
+const ObjectId = mongoose.Types.ObjectId;
 
 class ServiceMessage {
   constructor() {}
@@ -13,25 +13,24 @@ class ServiceMessage {
   //   }
   // }
 
-  getMessagesByIdDialog = async function(id) {
-    try {     
-     return await Message.aggregate([
+  getMessagesByIdDialog = async function (id) {
+    try {
+      return await Message.aggregate([
         {
-          $match: {            
-               idDialog: new ObjectId(id) ,      
-            
-          }
-        }
-      ])      
+          $match: {
+            idDialog: new ObjectId(id),
+          },
+        },
+      ]);
     } catch (e) {
-      console.log(e)
+      console.log(e);
     }
-  }
+  };
 
-  addMessage = async function(body) {
-    const message = new Message(body)
-    return await message.save()
-  }
+  addMessage = async function (body) {
+    const message = new Message(body);
+    return await message.save();
+  };
 
   // updateUserById = async function(id, body) {
   //   try {
@@ -54,4 +53,4 @@ class ServiceMessage {
   // }
 }
 
-module.exports = ServiceMessage
+module.exports = ServiceMessage;

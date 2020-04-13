@@ -1,27 +1,27 @@
-const mongoose = require("mongoose")
-const Dialog = require("./model-dialogs")
-const ObjectId = mongoose.Types.ObjectId
+const mongoose = require("mongoose");
+const Dialog = require("./model-dialogs");
+const ObjectId = mongoose.Types.ObjectId;
 
 class ServiceDialog {
   constructor() {}
 
-  getAllDialogs = async function() {
+  getAllDialogs = async function () {
     try {
-      return await Dialog.find({})
+      return await Dialog.find({});
     } catch (e) {
-      console.log(e)
+      console.log(e);
     }
-  }
+  };
 
-  getAllDialogsByIdUser = async function(idLogInUser) {
-    try {     
+  getAllDialogsByIdUser = async function (idLogInUser) {
+    try {
       return await Dialog.aggregate([
         {
           $match: {
             members: {
-              $all: [ObjectId(idLogInUser)]
-            }
-          }
+              $all: [ObjectId(idLogInUser)],
+            },
+          },
         },
         {
           $addFields: {
@@ -30,64 +30,62 @@ class ServiceDialog {
                 input: "$members",
                 as: "membersFilter",
                 cond: {
-                  $ne: ["$$membersFilter", ObjectId(idLogInUser)]
-                }
-              }
-            }
-          }
+                  $ne: ["$$membersFilter", ObjectId(idLogInUser)],
+                },
+              },
+            },
+          },
         },
         {
           $lookup: {
             from: "users",
             localField: "members",
             foreignField: "_id",
-            as: "members"
-          }
+            as: "members",
+          },
         },
         {
-          $unwind: "$members"
-        }
+          $unwind: "$members",
+        },
         // {
         //   $addFields: {
         //     members: "$members.login"
         //   }
         // }
-      ])
-      console.log(arr)
+      ]);
+      console.log(arr);
     } catch (e) {
-      console.log(e)
+      console.log(e);
     }
-  }
+  };
 
-  addDialog = async function(body) {
+  addDialog = async function (body) {
     try {
-      console.log(body)
-      const dialog = new Dialog(body)      
-      return await dialog.save()
+      const dialog = new Dialog(body);
+      return await dialog.save();
     } catch (e) {
-      console.log(e)
+      console.log(e);
     }
-  }
+  };
 
-  updateDialogById = async function(id, body) {
+  updateDialogById = async function (id, body) {
     try {
-      // console.log(body)
-      return await User.findByIdAndUpdate(id, body)
+      return await User.findByIdAndUpdate(id, body);
     } catch (e) {
-      console.log(e)
+      console.log(e);
     }
-  }
+  };
 
-  deleteDialogById = async function(id) {
+  deleteDialogById = async function (id) {
     try {
       if (await fs.pathExists(`public/images/users/${id}`)) {
-        await fs.remove(`public/images/users/${id}`)
+        await fs.remove(`public/images/users/${id}`);
       }
-      return await Dialog.deleteOne({ _id: id })
+      return await Dialog.deleteOne({ _id: id });
     } catch (e) {
-      console.log(e)
+      console.log(e);
     }
-  }
+  };
 }
 
-module.exports = ServiceDialog
+module.exports = ServiceDialog;
