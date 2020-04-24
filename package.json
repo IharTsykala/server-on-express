@@ -1,5 +1,5 @@
 {
-  "name": "myapp",
+  "name": "social-network-server",
   "version": "1.0.0",
   "description": "",
   "main": "app.js",
@@ -10,14 +10,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/IharTsykala/server-on-express.git"
+    "url": "git+https://github.com/IharTsykala/social-network-server.git"
   },
   "author": "Ihar Tsykala",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/IharTsykala/server-on-express/issues"
+    "url": "https://github.com/IharTsykala/social-network-server/issues"
   },
-  "homepage": "https://github.com/IharTsykala/server-on-express#readme",
+  "homepage": "https://github.com/IharTsykala/social-network-server#readme",
   "dependencies": {
     "@hapi/joi": "^17.1.0",
     "bcryptjs": "^2.4.3",
